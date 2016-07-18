@@ -1,0 +1,99 @@
+body {
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+div {
+	box-sizing: border-box;
+}
+
+img {
+	box-sizing: border-box;
+}
+
+.card {
+	width: auto;
+	height: auto;
+	max-width: 15vh;
+	max-height: 21vh;
+}
+
+.player {
+	position: relative;
+	height: 50%;
+	background-color: #005;
+	border: 2px solid #005;
+}
+
+.deck {
+	width: 100px;
+	height: 140px;
+	background-image: url("../res/img/cardback.svg");
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+
+.graveyard {
+	width: 100px;
+	height: 140px;
+	background-color: #222;
+}
+
+.stats {
+	position: absolute;
+	width: 500px;
+	height: 50px;
+	right: 0;
+	background-color: #008;
+}
+
+#p1_stats {
+	bottom: 0;
+}
+
+#p2_stats {
+	top: 0;
+}
+
+#battlefield {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 70vw;
+	height: 79vh;
+}
+
+#hand {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 70vw;
+	height: 21vh;
+	background-color: #050;
+}
+
+#stack {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 30vw;
+	height: 60vh;
+	background-color: #500;
+}
+
+#exile {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 30vw;
+	height: 40vh;
+	background-color: #777;
+}
+
+.priority {
+	border: 2px solid white;
+}
+
+.active {
+	background-color: #337;
+}

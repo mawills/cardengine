@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+	<head>
+		<script type="text/javascript" src="js/cards.js"></script>
+		<script type="text/javascript" src="js/back/constants.js"></script>
+		<script type="text/javascript" src="js/back/util.js"></script>
+		<script type="text/javascript" src="js/back/decks.js"></script>
+		<script type="text/javascript" src="js/back/classes.js"></script>
+		<script type="text/javascript" src="js/front/jquery-3.1.0.slim.min.js"></script>
+		<script type="text/javascript" src="js/front/main.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/reset.css">
+		<link rel="stylesheet" type="text/css" href="css/board.css">
+	</head>
+	<body>
+		<div id="battlefield">
+			<div id="player1" class="player active">
+				<div id="p1_deck" class="deck"></div>
+				<div id="p1_graveyard" class="graveyard"></div>
+				<div id="p1_stats" class="stats"></div>
+			</div>
+			<div id="player2" class="player priority">
+				<div id="p2_graveyard" class="graveyard"></div>
+				<div id="p2_deck" class="deck"></div>
+				<div id="p2_stats" class="stats"></div>
+			</div>
+		</div>
+		<div id="hand"></div>
+		<div id="stack"></div>
+		<div id="exile"></div>
+	</body>
+</html>
