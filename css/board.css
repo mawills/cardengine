@@ -8,6 +8,13 @@ div {
 }
 
 img {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	user-drag: none;
+	-webkit-touch-callout: none;
 	box-sizing: border-box;
 }
 
@@ -20,9 +27,8 @@ img {
 
 .player {
 	position: relative;
-	height: 50%;
+	height: 47%;
 	background-color: #005;
-	border: 2px solid #005;
 }
 
 .deck {
@@ -55,45 +61,77 @@ img {
 	top: 0;
 }
 
-#battlefield {
+#player1.priority > .stats {
+	border-bottom: 2px solid white;
+	border-right: 2px solid white;
+}
+
+#player2.priority > .stats {
+	border-top: 2px solid white;
+	border-right: 2px solid white;
+}
+
+#selection {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 70vw;
+	width: 15vw;
+	height: 50vh;
+	background-color: #888;
+}
+
+#log {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 15vw;
+	height: 60vh;
+	background-color: #111;
+}
+
+#battlefield {
+	position: absolute;
+	top: 0;
+	left: 15vw;
+	width: 65vw;
 	height: 79vh;
+}
+
+#phases {
+	width: 100%;
+	height: 6%;
+	background-color: #044;
 }
 
 #hand {
 	position: absolute;
 	bottom: 0;
-	left: 0;
-	width: 70vw;
+	left: 15vw;
+	width: 65vw;
 	height: 21vh;
 	background-color: #050;
+	overflow-y: hidden;
 }
 
 #stack {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 30vw;
-	height: 60vh;
+	width: 20vw;
+	height: 100vh;
 	background-color: #500;
 }
 
-#exile {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	width: 30vw;
-	height: 40vh;
-	background-color: #777;
-}
-
 .priority {
-	border: 2px solid white;
+	outline-offset: -2px;
+	outline: 2px solid white;
 }
 
 .active {
 	background-color: #337;
+}
+
+.selected {
+	outline-offset: -3px;
+	outline: 3px solid red;
 }
