@@ -59,11 +59,9 @@ function UI(account)
 			$(".selected").removeClass("selected");
 			t.element.addClass("selected");
 
-			$("#selection").html(
-				"Name: " + name + "<br>" +
-				"Type: " + type_text + "<br>" +
-				"Text: " + text
-			);
+			$("#selection-name").html(name + "<br>");
+			$("#selection-type").html(type_text + "<br>");
+			$("#selection-text").html(text);
 		}
 
 		t.element = $("<img>",{ class: 'card', src: 'res/img/cards/' + id + '.jpg'}).click(select);

@@ -13,7 +13,12 @@
 		<link rel="stylesheet" type="text/css" href="css/board.css">
 	</head>
 	<body>
-		<div id="selection"></div>
+
+		<div id="selection">
+			<div id="selection-name"></div>
+			<div id="selection-type"></div>
+			<div id="selection-text"></div>
+		</div>
 
 		<div id="log">
 			<ul id="tabs" class="tabs">
@@ -22,14 +27,13 @@
 			</ul>
 			<div class="tab-panels">
 				<div id="combatlog" class="panel">
-					<p>Shit goes down here.</p>
+					<p>Combat log text.</p>
 				</div>
 				<div id="exile" class="panel" hidden>
-					<p>Shit goes away here.</p>
+					<p>list of cards in exile here</p>
 				</div>
 			</div>
 		</div>
-
 		<div id="battlefield">
 			<div id="player1" class="player active">
 				<div id="p1_deck" class="deck"></div>
