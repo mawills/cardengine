@@ -7,24 +7,29 @@
 		<script type="text/javascript" src="js/back/decks.js"></script>
 		<script type="text/javascript" src="js/back/classes.js"></script>
 		<script type="text/javascript" src="js/front/jquery-3.1.0.slim.min.js"></script>
+		<script type="text/javascript" src="js/front/classes.js"></script>
 		<script type="text/javascript" src="js/front/main.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
 		<link rel="stylesheet" type="text/css" href="css/board.css">
 	</head>
 	<body>
 		<div id="selection"></div>
+
 		<div id="log">
-			<ul id="tabs" class="tab">
-				<li><a href="#" class="tablinks" onclick="toggleLog(event, 'combatlog')">Combat Log</a></li>
-				<li><a href="#" class="tablinks" onclick="toggleLog(event, 'exile')">Exile</a></li>
+			<ul id="tabs" class="tabs">
+				<li><a href="#combatlog" class="js-current">Combat Log</a></li>
+				<li><a href="#exile"">Exile</a></li>
 			</ul>
-			<div id="combatlog" class="tabcontent">
-				<p>Shit goes down here.</p>
-			</div>
-			<div id="exile" class="tabcontent">
-				<p>Shit goes away here.</p>
+			<div class="tab-panels">
+				<div id="combatlog" class="panel">
+					<p>Shit goes down here.</p>
+				</div>
+				<div id="exile" class="panel" hidden>
+					<p>Shit goes away here.</p>
+				</div>
 			</div>
 		</div>
+
 		<div id="battlefield">
 			<div id="player1" class="player active">
 				<div id="p1_deck" class="deck"></div>

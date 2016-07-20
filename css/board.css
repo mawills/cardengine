@@ -122,12 +122,12 @@ img {
 	background-color: #500;
 }
 
-.priority {
+.player.priority {
 	outline-offset: -2px;
 	outline: 2px solid white;
 }
 
-.active {
+.player.active {
 	background-color: #337;
 }
 
@@ -137,7 +137,7 @@ img {
 }
 
 /* Style the list */
-ul.tab {
+ul.tabs {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
@@ -146,12 +146,12 @@ ul.tab {
 }
 
 /* Float the list items side by side */
-ul.tab li {
+ul.tabs li {
 	float: left;
 }
 
 /* Style the links inside the list items */
-ul.tab li a {
+ul.tabs li a {
 	display: inline-block;
 	color: black;
 	text-align: center;
@@ -164,10 +164,10 @@ ul.tab li a {
 }
 
 /* Change background color of links on hover */
-ul.tab li a:hover {background-color: #ddd;}
+ul.tabs li a:hover {background-color: #ddd;}
 
 /* Create an active/current tablink class */
-ul.tab li a:focus, .active {background-color: #ccc;}
+ul.tabs li a:focus, .js-current {background-color: #ccc;}
 
 /* Style the tab content */
 .tabcontent {

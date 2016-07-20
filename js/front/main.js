@@ -1,46 +1,26 @@
-var mtg = new Game(new UI());
-
-function update()
-{
-	$("#hand").empty();
-	var hand = mtg.getPlayer(P1).getHand();
-	for (var i=0; i<hand.length; i++)
-	{
-		(function(){
-			var card = hand[i];
-			$("#hand").append();
-		})();
-	}
-}
-
-function select(card)
-{
-
-}
-
-function getType(card)
-{
-
-}
-
 window.onload = function()
 {
 	"use strict";
-	update();
-};
+	var account1 = {};
+	account1.deck = deck1;
+	var account2 = {};
+	account2.deck = deck2;
+	var mtg = new Game(account1, account2);
 
-// Toggle between Combat Log and Exile tabs on the UI
-function toggleLog(evt, tabName) {
+	var $tabs = $('.tabs');
+	var $panels = $('.panel');
 
-	var i, tabcontent, tablinks;
+	$tabs.on('click', 'a', function(e) {
+		e.preventDefault();
+		var id = $(this).attr('href');
+		console.log(id);
 
-	// Get all elements with class="tabcontent" and hide them
-	tabcontent = $(".tabcontent").hide();
+		$panels.filter(':not([hidden])').attr('hidden', true);
+		$(id).removeAttr('hidden');
 
-	// Get all elements with class="tablinks" and remove the class "active"
-	tablinks = $(".tablinks").removeClass("active");
+		$tabs.find('.js-current').removeClass('js-current');
+		$(this).addClass('js-current');
+	})
 
-	// Show the current tab, and add an "active" class to the link that opened the tab
-	$("#" + tabName).css("display", "block");
-	evt.currentTarget.tabName += " active";
+
 }
