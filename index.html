@@ -13,7 +13,18 @@
 	</head>
 	<body>
 		<div id="selection"></div>
-		<div id="log"></div>
+		<div id="log">
+			<ul id="tabs" class="tab">
+				<li><a href="#" class="tablinks" onclick="toggleLog(event, 'combatlog')">Combat Log</a></li>
+				<li><a href="#" class="tablinks" onclick="toggleLog(event, 'exile')">Exile</a></li>
+			</ul>
+			<div id="combatlog" class="tabcontent">
+				<p>Shit goes down here.</p>
+			</div>
+			<div id="exile" class="tabcontent">
+				<p>Shit goes away here.</p> 
+			</div>
+		</div>
 		<div id="battlefield">
 			<div id="player1" class="player active">
 				<div id="p1_deck" class="deck"></div>
