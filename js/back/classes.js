@@ -1,6 +1,27 @@
-function Game()
+function Game(account1, account2)
 {
 	"use strict";
+
+	function Player(account)
+	{
+		var
+			p = this,
+			hand = [],
+			deck = [],
+			ui = new UI(account),
+			i, j,
+		varend;
+
+		for (i in account.deck)
+			for (j=0; j<account.deck[i]; j++)
+				deck.push(i);
+		shuffle(deck);
+		for (i=0; i<STARTING_HAND_SIZE; i++)
+			hand.push(deck.pop());
+
+		ui.drawCards(hand);
+	}
+
 	var
 		mtg = this,
 		priority = NO_PRIORITY,
@@ -9,42 +30,6 @@ function Game()
 		stack = [],
 	varend;
 
-	players[P1] = new Player(deck2);
-	players[P2] = new Player(deck1);
-
-	mtg.getPlayer = function(player)
-	{
-		return players[player];
-	};
-}
-
-function Player(_deck)
-{
-	"use strict";
-	var
-		p = this,
-		hand = [],
-		deck = [],
-		i, j, // iterators
-	varend;
-
-	for (i in _deck)
-	{
-		for (j=0; j<_deck[i]; j++)
-		{
-			deck.push(i);
-		}
-	}
-
-	shuffle(deck);
-
-	for (i=0; i<7; i++)
-	{
-		hand.push(deck.pop());
-	}
-
-	p.getHand = function()
-	{
-		return hand;
-	}
+	players[P1] = new Player(account1);
+	players[P2] = new Player(account2);
 }

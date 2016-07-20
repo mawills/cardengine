@@ -122,12 +122,12 @@ img {
 	background-color: #500;
 }
 
-.priority {
+.player.priority {
 	outline-offset: -2px;
 	outline: 2px solid white;
 }
 
-.active {
+.player.active {
 	background-color: #337;
 }
 
