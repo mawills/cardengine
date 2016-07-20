@@ -138,11 +138,11 @@ img {
 
 /* Style the list */
 ul.tab {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #bfbfbf;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #bfbfbf;
 }
 
 /* Float the list items side by side */
@@ -152,15 +152,15 @@ ul.tab li {
 
 /* Style the links inside the list items */
 ul.tab li a {
-    display: inline-block;
-    color: black;
-    text-align: center;
-    padding-top: 14px;
-    padding-bottom: 14px;
-    text-decoration: none;
-    transition: 0.3s;
-    font-size: 15px;
-    width: 7.5vw;
+	display: inline-block;
+	color: black;
+	text-align: center;
+	padding-top: 14px;
+	padding-bottom: 14px;
+	text-decoration: none;
+	transition: 0.3s;
+	font-size: 15px;
+	width: 7.5vw;
 }
 
 /* Change background color of links on hover */
@@ -171,6 +171,6 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 
 /* Style the tab content */
 .tabcontent {
-    display: none;
-    padding: 6px 12px;
+	display: none;
+	padding: 6px 12px;
 }
