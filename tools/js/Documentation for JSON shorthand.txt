@@ -1,0 +1,36 @@
+Documentation for JSON shorthand
+
+TYPES:
+Artifact = A
+Creature = C
+Enchantment = E
+Instant = I
+Land = L
+Planeswalker = P
+Tribal = T
+Sorcery = S
+
+SUPERTYPE:
+Basic = B
+Snow = S
+Legendary = L
+World = W
+
+COLORS:
+White = W;
+Blue = U
+Black = B
+Red = R
+Green = G
+
+JSON Attributes:
+Layout = L
+manaCost = m
+colors = c
+supertype = sup
+types = ty
+subtype = sub
+text = te
+power = p
+toughness = to
+colorIdentity = ci
