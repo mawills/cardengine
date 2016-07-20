@@ -20,6 +20,11 @@ function Game(account1, account2)
 			hand.push(deck.pop());
 
 		ui.drawCards(hand);
+
+		p.getUI = function()
+		{
+			return ui;
+		};
 	}
 
 	var
@@ -32,4 +37,9 @@ function Game(account1, account2)
 
 	players[P1] = new Player(account1);
 	players[P2] = new Player(account2);
+
+	mtg.getUI = function()
+	{
+		return players[active_player].getUI();
+	};
 }

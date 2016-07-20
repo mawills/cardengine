@@ -6,6 +6,7 @@ window.onload = function()
 	var account2 = {};
 	account2.deck = deck2;
 	var mtg = new Game(account1, account2);
+	mtg.getUI().display();
 
 	var $tabs = $('.tabs');
 	var $panels = $('.panel');

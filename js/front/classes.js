@@ -72,6 +72,11 @@ function UI(account)
 		selection,
 	varend;
 
+	ui.display = function()
+	{
+
+	}
+
 	ui.drawCards = function(cards)
 	{
 		for (var i=0; i<cards.length; i++)
@@ -83,5 +88,3 @@ function UI(account)
 		}
 	};
 }
-
-
