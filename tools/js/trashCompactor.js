@@ -23,64 +23,96 @@ for(var key in cards){
     delete cards[key].name;
     delete cards[key].imageName;
 
+
+    //DOESNT WORK ATM
     for(var type in cards[key].types) {
         switch (type) {
             case 'Artifact':
-                cards[x].types.type = 'A';
+                cards[key].types.type = 'A';
                 break;
             case 'Creature':
-                cards[x].types.type = 'C';
+                cards[key].types.type = 'C';
                 break;
             case 'Enchantment':
-                cards[x].types.type = 'E';
+                cards[key].types.type = 'E';
                 break;
             case 'Instant':
-                cards[x].types.type = 'I';
+                cards[key].types.type = 'I';
                 break;
             case 'Land':
-                cards[x].types.type = 'L';
+                cards[key].types.type = 'L';
                 break;
             case 'Planeswalker':
-                cards[x].types.type = 'P';
+                cards[key].types.type = 'P';
                 break;
             case 'Tribal':
-                cards[x].types.type = 'T';
+                cards[key].types.type = 'T';
                 break;
             case 'Sorcery':
-                cards[x].types.type = 'S';
+                cards[key].types.type = 'S';
                 break;
         }
     }
 
+    //DOESNT WORK ATM
     for(var type in cards[key].supertype) {
         switch (type) {
             case 'Basic':
-                cards[x].supertype.type = 'B';
+                cards[key].supertype.type = 'B';
                 break;
             case 'Elite':
-                cards[x].supertype.type = 'E';
+                cards[key].supertype.type = 'E';
                 break;
             case 'Legendary':
-                cards[x].supertype.type = 'L';
+                cards[key].supertype.type = 'L';
                 break;
             case 'World':
-                cards[x].supertype.type = 'W';
+                cards[key].supertype.type = 'W';
                 break;
+
         }
     }
-    if(cards[key].types)
+
+    //DOESNT WORK ATM
+    for(var color in cards[key].colors) {
+    	switch(color) {
+    		case 'White':
+    			cards[key].colors.color = 'W';
+    			break;
+    		case 'Blue':
+    			cards[key].colors.color = 'U';
+    			break;
+    		case 'Green':
+    			cards[key].colors.color = 'G';
+    			break;
+    		case 'Black':
+    			cards[key].colors.color = 'B';
+    			break;
+    		case 'Red':
+    			cards[key].colors.color = 'R';
+    			break;
+    	}
+    }
+
+    //TEST AFTER ABOVE IS FIXED
+    /*if(cards[key].types)
         cards[key].types = cards[key].types.join('');
     if(cards[key].supertype)
         cards[key].supertype = cards[key].supertype.join('');
+    if(cards[key].colors)
+    	cards[key].colors = cards[key].colors.join('');
+    if(cards[key].colorIdentity)
+    	cards[key].colorIdentity = cards[key].colorIdentity.join('');*/
 
 	cards[key].renameProperty('layout', 'l');
 	cards[key].renameProperty('manaCost', 'm');
-	cards[key].renameProperty('color', 'c');
-    cards[key].renameProperty('supertype', 'sup')
+	cards[key].renameProperty('colors', 'c');
+    cards[key].renameProperty('supertype', 'sup');
 	cards[key].renameProperty('types', 'ty');
 	cards[key].renameProperty('subtypes', 'sub');
 	cards[key].renameProperty('text', 'te');
 	cards[key].renameProperty('power', 'p');
+	cards[key].renameProperty('toughness', 'to');
 	cards[key].renameProperty('colorIdentity', 'ci');
 };
 
