@@ -1,7 +1,17 @@
+@font-face {
+	font-family: "Beleren";
+	src: url("../res/fonts/beleren-bold-webfont.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Beleren Smallcaps";
+	src: url("../res/fonts/belerensmallcaps-bold-webfont.ttf") format("truetype");
+}
+
 body {
 	overflow-x: hidden;
 	overflow-y: hidden;
-	font-family: "Verdana", sans-serif;
+	font-family: "Beleren";
 }
 
 div {
