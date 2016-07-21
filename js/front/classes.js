@@ -9,11 +9,6 @@ function UI(account)
 			library = [],
 			i, j,
 		varend;
-
-		p.getHand = function()
-		{
-			return hand;
-		}
 	}
 
 	function Opponent()
@@ -25,32 +20,44 @@ function UI(account)
 	function Card(name)
 	{
 		var id = name.toLowerCase().replace(/[^\w]/g, '');
-		var c = cards[name];
-		if (c.te)
-			c.te = c.te.replace("\n", "<br>");
+		var c = CARDS[name];
 
 		var
-			supertypes = c.supertypes,
-			types = c.ty,
-			subtypes = c.sub,
+			layout     = c[LAYOUT_ATTRIBUTE],
+			supertypes = c[SUPERTYPES_ATTRIBUTE],
+			types      = c[TYPES_ATTRIBUTE],
+			subtypes   = c[SUBTYPES_ATTRIBUTE],
+			text       = c[ORACLE_TEXT_ATTRIBUTE],
 			type_text = "",
 			colors = [],
-			text = c.te,
 			t = this,
 			i,
 		varend;
 
-		if (c.supertypes)
-			for (i=0; i<c.supertypes.length; i++)
-				type_text += c.supertypes[i] + " ";
-		if (c.ty)
-			for (i=0; i<c.ty.length; i++)
-				type_text += c.ty[i] + " ";
-		if (c.sub)
+		supertypes = supertypes ? supertypes.split('') : [];
+		types = types ? types.split('') : [];
+
+		if (text)
+			text = text.replace("\n", "<br>");
+
+		if (!layout)
+			layout = NORMAL_LAYOUT;
+
+		for (i = 0; i < supertypes.length; i++)
+		{
+			supertypes[i] = SUPERTYPES[supertypes[i]];
+			type_text += supertypes[i] + " ";
+		}
+		for (i = 0; i < types.length; i++)
+		{
+			types[i] = TYPES[types[i]];
+			type_text += types[i] + " ";
+		}
+		if (subtypes)
 		{
 			type_text += TYPE_DASH + " ";
-			for (i=0; i<c.sub.length; i++)
-				type_text += c.sub[i] + " ";
+			for (i = 0; i < subtypes.length; i++)
+				type_text += subtypes[i] + " ";
 		}
 		type_text = type_text.slice(0, -1);
 
@@ -75,7 +82,7 @@ function UI(account)
 	ui.display = function()
 	{
 
-	}
+	};
 
 	ui.drawCards = function(cards)
 	{
