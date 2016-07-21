@@ -22,15 +22,17 @@ Blue = U
 Black = B
 Red = R
 Green = G
+Colorless = C
 
 JSON Attributes:
-Layout = L
+Layout = l
 manaCost = m
-colors = c
-supertype = sup
-types = ty
-subtype = sub
-text = te
-power = p
-toughness = to
-colorIdentity = ci
+colors = C
+supertype = S
+types = t
+subtype = s
+text = x
+power = P
+toughness = T
+colorIdentity = i
+cmc = c
