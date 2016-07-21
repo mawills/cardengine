@@ -1,21 +1,6 @@
-function UI(account)
+function UI()
 {
 	"use strict";
-
-	function You(player)
-	{
-		var
-			hand = $('#hand'),
-			library = [],
-			i, j,
-		varend;
-	}
-
-	function Opponent()
-	{
-		var
-		varend;
-	}
 
 	function Card(name)
 	{
@@ -76,22 +61,22 @@ function UI(account)
 
 	var
 		ui = this,
-		selection,
 	varend;
 
-	ui.display = function()
+	function update(data)
 	{
-
-	};
-
-	ui.drawCards = function(cards)
-	{
-		for (var i=0; i<cards.length; i++)
+		for (var i = 0; i < data.hand.length; i++)
 		{
 			(function(){
-				var card = new Card(cards[i]);
+				var card = new Card(data.hand[i]);
 				$("#hand").append(card.element);
 			})();
 		}
+	}
+
+	ui.display = function(mtg)
+	{
+		var data = mtg.getUIData();
+		update(data);
 	};
 }

@@ -5,6 +5,7 @@
 		<script type="text/javascript" src="js/cards.js"></script>
 		<script type="text/javascript" src="js/constants.js"></script>
 		<script type="text/javascript" src="js/back/util.js"></script>
+		<script type="text/javascript" src="js/back/actions.js"></script>
 		<script type="text/javascript" src="js/back/decks.js"></script>
 		<script type="text/javascript" src="js/back/classes.js"></script>
 		<script type="text/javascript" src="js/front/classes.js"></script>
@@ -22,8 +23,8 @@
 
 		<div id="log">
 			<ul id="tabs" class="tabs">
-				<li><a href="#combatlog" class="js-current">Combat Log</a></li>
-				<li><a href="#exile">Exile</a></li>
+				<li data-target="#combatlog" class="js-current">Combat Log</li>
+				<li data-target="#exile">Exile</li>
 			</ul>
 			<div class="tab-panels">
 				<div id="combatlog" class="panel">

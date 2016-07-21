@@ -7,39 +7,50 @@ function Game(account1, account2)
 		var
 			p = this,
 			hand = [],
-			deck = [],
-			ui = new UI(account),
+			library = [],
+			life = STARTING_LIFE_TOTAL,
 			i, j,
 		varend;
 
 		for (i in account.deck)
-			for (j=0; j<account.deck[i]; j++)
-				deck.push(i);
-		shuffle(deck);
-		for (i=0; i<STARTING_HAND_SIZE; i++)
-			hand.push(deck.pop());
+			for (j = 0; j < account.deck[i]; j++)
+				library.push(i);
+		shuffleArray(library);
+		for (i = 0; i < STARTING_HAND_SIZE; i++)
+			hand.push(library.pop());
 
-		ui.drawCards(hand);
+		p.actions = PLAYER_ACTIONS;
 
-		p.getUI = function()
+		p.getUIData = function()
 		{
-			return ui;
+			return {
+				hand: hand
+			};
 		};
+
+	}
+
+	function act(obj, func, arg)
+	{
+
+		if (obj.forbid.func)
+			return false;
 	}
 
 	var
 		mtg = this,
-		priority = NO_PRIORITY,
+		priority = P1,
 		active_player = P1,
 		players = {},
 		stack = [],
+		phase = PREGAME_PHASE,
 	varend;
 
 	players[P1] = new Player(account1);
 	players[P2] = new Player(account2);
 
-	mtg.getUI = function()
+	mtg.getUIData = function()
 	{
-		return players[active_player].getUI();
+		return players[active_player].getUIData();
 	};
 }

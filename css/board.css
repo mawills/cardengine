@@ -12,13 +12,6 @@ body {
 	overflow-x: hidden;
 	overflow-y: hidden;
 	font-family: "Beleren";
-}
-
-div {
-	box-sizing: border-box;
-}
-
-img {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
@@ -26,6 +19,10 @@ img {
 	-webkit-user-drag: none;
 	user-drag: none;
 	-webkit-touch-callout: none;
+	box-sizing: border-box;
+}
+
+div {
 	box-sizing: border-box;
 }
 
@@ -159,10 +156,6 @@ ul.tabs {
 /* Float the list items side by side */
 ul.tabs li {
 	float: left;
-}
-
-/* Style the links inside the list items */
-ul.tabs li a {
 	display: inline-block;
 	color: black;
 	text-align: center;
@@ -175,10 +168,10 @@ ul.tabs li a {
 }
 
 /* Change background color of links on hover */
-ul.tabs li a:hover {background-color: #ddd;}
+ul.tabs li:hover {background-color: #ddd; cursor: pointer;}
 
 /* Create an active/current tablink class */
-ul.tabs li a:focus, .js-current {background-color: #bfbfbf;}
+ul.tabs li:focus, .js-current {background-color: #bfbfbf;}
 
 /* Style the tab content */
 .tab-panels {
