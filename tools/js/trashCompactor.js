@@ -1,3 +1,4 @@
+//Taken from stackoverflow user Dex
 Object.prototype.renameProperty = function (oldName, newName) {
      // Do nothing if the names are the same
      if (oldName == newName) {
@@ -18,12 +19,28 @@ for(var key in cards){
 
     delete cards[key].type;
     delete cards[key].mciNumber;
-    if(cards[key].layout === 'normal')
+    if(cards[key].layout === 'normal' || cards[key].layout === 'scheme' || cards[key].layout === ' phenomenon' || cards[key].layout === 'vangaurd' || cards[key].layout === 'plane')
         delete cards[key].layout;
     delete cards[key].name;
     delete cards[key].imageName;
     delete cards[key].cmc;
 
+    if(cards[key].layout) {
+    	switch(cards[key].layout) {
+    		case 'split':
+    			cards[key].layout = 's';
+    			break;
+    		case 'flip':
+    			cards[key].layout = 'f';
+    			break;
+    		case 'double-faced':
+    			cards[key].layout = 'd';
+    			break;
+    		case 'token':
+    			cards[key].layout = 't';
+    			break;
+    	}
+    }
  
     if(cards[key].types) {
 	    for(var i = 0; i < cards[key].types.length; ++i) {

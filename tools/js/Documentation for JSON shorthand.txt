@@ -17,12 +17,18 @@ Legendary = L
 World = W
 
 COLORS:
-White = W;
+White = W
 Blue = U
 Black = B
 Red = R
 Green = G
 Colorless = C
+
+LAYOUT:
+split = s
+flip = f
+double-faced = d
+token = t
 
 JSON Attributes:
 Layout = l
@@ -35,4 +41,3 @@ text = x
 power = P
 toughness = T
 colorIdentity = i
-cmc = c
