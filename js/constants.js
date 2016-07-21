@@ -8,11 +8,7 @@ var
 	// player ids
 	P1 = 0,
 	P2 = 1,
-
-	// priorities
-	NO_PRIORITY = 0,
-	P1_PRIORITY = 1,
-	P2_PRIORITY = 2,
+	NO_PLAYER = 2,
 
 	// phases
 	PREGAME_PHASE   = 0,

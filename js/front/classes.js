@@ -1,4 +1,4 @@
-function UI()
+function UI(player)
 {
 	"use strict";
 
@@ -65,6 +65,7 @@ function UI()
 
 	function update(data)
 	{
+		$('#hand').empty();
 		for (var i = 0; i < data.hand.length; i++)
 		{
 			(function(){
@@ -72,6 +73,20 @@ function UI()
 				$("#hand").append(card.element);
 			})();
 		}
+
+		if (data.priority == data.player)
+			$("#player1").addClass("priority");
+		else if (data.priority == NO_PLAYER)
+			$(".priority").removeClass("priority");
+		else
+			$("#player2").addClass("priority");
+
+		if (data.active == data.player)
+			$("#player1").addClass("active");
+		else if (data.active == NO_PLAYER)
+			$(".active").removeClass("active");
+		else
+			$("#player2").addClass("active");
 	}
 
 	ui.display = function(mtg)

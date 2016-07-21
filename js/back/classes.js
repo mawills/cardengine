@@ -2,7 +2,7 @@ function Game(account1, account2)
 {
 	"use strict";
 
-	function Player(account)
+	function Player(player, account)
 	{
 		var
 			p = this,
@@ -24,6 +24,9 @@ function Game(account1, account2)
 		p.getUIData = function()
 		{
 			return {
+				player: player,
+				priority: priority,
+				active: active,
 				hand: hand
 			};
 		};
@@ -40,17 +43,17 @@ function Game(account1, account2)
 	var
 		mtg = this,
 		priority = P1,
-		active_player = P1,
+		active = P1,
 		players = {},
 		stack = [],
 		phase = PREGAME_PHASE,
 	varend;
 
-	players[P1] = new Player(account1);
-	players[P2] = new Player(account2);
+	players[P1] = new Player(P1, account1);
+	players[P2] = new Player(P2, account2);
 
 	mtg.getUIData = function()
 	{
-		return players[active_player].getUIData();
+		return players[priority].getUIData();
 	};
 }

@@ -26,11 +26,22 @@ div {
 	box-sizing: border-box;
 }
 
+img {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	user-drag: none;
+	-webkit-touch-callout: none;
+}
+
 .card {
 	width: auto;
 	height: auto;
 	max-width: 15vh;
 	max-height: 21vh;
+	cursor: pointer;
 }
 
 .player {
@@ -62,20 +73,20 @@ div {
 }
 
 #p1_stats {
-	bottom: 0;
-}
-
-#p2_stats {
 	top: 0;
 }
 
+#p2_stats {
+	bottom: 0;
+}
+
 #player1.priority > .stats {
-	border-bottom: 2px solid white;
+	border-top: 2px solid white;
 	border-right: 2px solid white;
 }
 
 #player2.priority > .stats {
-	border-top: 2px solid white;
+	border-bottom: 2px solid white;
 	border-right: 2px solid white;
 }
 
