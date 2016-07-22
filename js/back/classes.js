@@ -35,14 +35,15 @@ function Game(account1, account2)
 		if (!obj.actions[name])
 			obj.actions[name] = new Action();
 
-		if (obj.actions[name])
-		{
-			if (!obj.actions[name].func)
-				obj.actions[name].func = func;
+		if (!func && !obj.actions[name].func)
+			error("A grant was attempted with no action method.");
 
-			if (obj.actions[name].func != func)
-				error("A non-identical grant with a duplicate name was attempted.");
-		}
+		if (!obj.actions[name].func)
+			obj.actions[name].func = func;
+
+		if (obj.actions[name].func != func)
+			error("A non-identical grant with a duplicate name was attempted.");
+
 		obj.actions[name].grantSources[source] = true;
 	}
 
@@ -122,44 +123,25 @@ function Game(account1, account2)
 
 	function Player(player, account)
 	{
-		var
-			p = this,
-			hand = [],
-			library = [],
-			life = STARTING_LIFE_TOTAL,
-			i, j,
-		varend;
+		var	p = this, i, j;
+		p.hand = [];
+		p.library = [];
+		p.life = STARTING_LIFE_TOTAL;
 
 		for (i in account.deck)
 			for (j = 0; j < account.deck[i]; j++)
-				library.push(i);
+				p.library.push(i);
 
 		p.name = "Player " + player;
-
-		grant(p, "draw cards", "Base Rules", function(n){
-			for (var i = 0; i < n; i++)
-				hand.push(library.pop());
-			return p.name + " draws " + n + " card(s).";
-		});
-
-		grant(p, "shuffle", "Base Rules", function(){
-			var j, x, i;
-			for (i = library.length; i; i--) {
-				j = Math.floor(Math.random() * i);
-				x = library[i - 1];
-				library[i - 1] = library[j];
-				library[j] = x;
-			}
-			return p.name + " shuffles their library.";
-		});
 
 		p.getUIData = function()
 		{
 			return {
+				hand: p.hand,
+				life: p.life,
 				player: player,
 				priority: priority,
 				active: active,
-				hand: hand,
 				combat_log: combat_log
 			};
 		};
@@ -167,22 +149,46 @@ function Game(account1, account2)
 
 	mtg.name = "The game";
 
-	grant(mtg, "start", "Base Rules", function(){
+	var GAME_SOURCE = "Base Rules";
+
+	grant(mtg, "start", GAME_SOURCE, function(){
 		players[P1] = new Player(P1, account1);
 		players[P2] = new Player(P2, account2);
-		act(players[P1], "shuffle");
-		act(players[P2], "shuffle");
-		act(players[P1], "draw cards", STARTING_HAND_SIZE);
-		act(players[P2], "draw cards", STARTING_HAND_SIZE);
+
+		for (var player of [players[P1], players[P2]])
+		{(function(){
+			var p = player;
+			grant(p, "draw cards", GAME_SOURCE, function(n){
+				for (var i = 0; i < n; i++)
+					p.hand.push(p.library.pop());
+				return p.name + " draws " + n + " card(s).";
+			});
+
+			grant(p, "shuffle", GAME_SOURCE, function(){
+				var j, x, i;
+				for (i = p.library.length; i; i--) {
+					j = Math.floor(Math.random() * i);
+					x = p.library[i - 1];
+					p.library[i - 1] = p.library[j];
+					p.library[j] = x;
+				}
+				return p.name + " shuffles their library.";
+			});
+			act(p, "shuffle");
+			act(p, "draw cards", STARTING_HAND_SIZE);
+			ungrant(p, "shuffle", GAME_SOURCE);
+			ungrant(p, "draw cards", GAME_SOURCE);
+		})();}
 		act(mtg, "change phase", MAIN_PHASE_1);
 	});
 
-	grant(mtg, "change phase", "Base Rules", function(new_phase){
+	grant(mtg, "change phase", GAME_SOURCE, function(new_phase){
 		phase = new_phase;
 		return "It is the " + new_phase + ".";
 	});
 
 	act(mtg, "start");
+	ungrant(mtg, "start", GAME_SOURCE);
 
 	mtg.getUIData = function()
 	{
