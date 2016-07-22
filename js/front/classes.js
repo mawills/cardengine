@@ -40,7 +40,7 @@ function UI(player)
 		}
 		if (subtypes)
 		{
-			type_text += TYPE_DASH + " ";
+			type_text += "— ";
 			for (i = 0; i < subtypes.length; i++)
 				type_text += subtypes[i] + " ";
 		}

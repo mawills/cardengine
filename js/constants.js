@@ -1,6 +1,4 @@
 var
-	TYPE_DASH = decodeURIComponent(escape("\xE2\x80\x94")),
-
 	// game constants
 	STARTING_HAND_SIZE = 7,
 	STARTING_LIFE_TOTAL = 20,
@@ -12,11 +10,11 @@ var
 
 	// phases
 	PREGAME_PHASE   = 0,
-	BEGINNING_PHASE = 1,
-	MAIN_PHASE_1    = 2,
-	COMBAT_PHASE    = 3,
-	MAIN_PHASE_2    = 4,
-	ENDING_PHASE    = 5,
+	BEGINNING_PHASE = "Beginning Phase",
+	MAIN_PHASE_1    = "pre-combat Main Phase",
+	COMBAT_PHASE    = "Combat Phase",
+	MAIN_PHASE_2    = "Main Phase",
+	ENDING_PHASE    = "Ending Phase",
 
 	// steps
 	UNTAP_STEP  = 0,
