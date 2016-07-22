@@ -4,15 +4,15 @@ function Game(account1, account2)
 
 	var
 		mtg = this,
-		priority = P1,
-		active = P1,
+		priority = NO_PLAYER,
+		active = NO_PLAYER,
 		players = {},
 		stack = [],
 		phase = PREGAME_PHASE,
 		combat_log = [],
 		tick_number = 0,
 		triggers = [],
-	varend;
+		i;
 
 	function error(msg)
 	{
@@ -38,11 +38,14 @@ function Game(account1, account2)
 		if (!func && !obj.actions[name].func)
 			error("A grant was attempted with no action method.");
 
-		if (!obj.actions[name].func)
-			obj.actions[name].func = func;
+		if (func)
+		{
+			if (!obj.actions[name].func)
+				obj.actions[name].func = func;
 
-		if (obj.actions[name].func != func)
-			error("A non-identical grant with a duplicate name was attempted.");
+			if (obj.actions[name].func != func)
+				error("A non-identical grant with a duplicate name was attempted.");
+		}
 
 		obj.actions[name].grantSources[source] = true;
 	}
@@ -72,10 +75,10 @@ function Game(account1, account2)
 		delete obj.actions[name].forbidSources[source];
 	}
 
-	function listen(trigger_obj, trigger_act, trigger_arg, response_obj, response_act, response_arg)
+	function listen(trigger, response)
 	{
 		listen.id = ++listen.id || 1;
-		triggers[listen.id] = {obj: trigger_obj, act: trigger_act, arg:trigger_arg, response:{obj: response_obj, act:response_act, arg:response_arg}};
+		triggers[listen.id] = {obj: trigger.obj, act: trigger.act, arg:trigger.arg, response:{obj: response.obj, act:response.act, arg:response.arg}};
 		return listen.id;
 	}
 
@@ -84,20 +87,20 @@ function Game(account1, account2)
 		delete triggers[id];
 	}
 
-	function act(obj, act, arg)
+	function act(obj, action, arg)
 	{
 		var i;
-		if (!obj.actions[act] || !Object.getOwnPropertyNames(obj.actions[act].grantSources).length)
+		if (!obj.actions[action] || !Object.getOwnPropertyNames(obj.actions[action].grantSources).length)
 		{
-			console.log(obj.name + " cannot " + act + ". (Not granted by any source.)");
+			console.log(obj.name + " cannot " + action + ". (Not granted by any source.)");
 			return;
 		}
 
-		if (Object.getOwnPropertyNames(obj.actions[act].forbidSources).length)
+		if (Object.getOwnPropertyNames(obj.actions[action].forbidSources).length)
 		{
-			var forbid_message = obj.name + " cannot " + act + ". (Forbidden by: ";
-			for (i = 0; i < obj.actions[act].forbid.length; i++)
-				forbid_message += obj.actions[act].forbid[i] + ', ';
+			var forbid_message = obj.name + " cannot " + action + ". (Forbidden by: ";
+			for (i = 0; i < obj.actions[action].forbid.length; i++)
+				forbid_message += obj.actions[action].forbid[i] + ', ';
 			console.log(forbid_message.slice(0, -2) + ')');
 			return;
 		}
@@ -107,13 +110,13 @@ function Game(account1, account2)
 		for (i = 0; i < triggers.length; i++)
 			if (
 				triggers[i] &&
-				(triggers[i].obj === 'undefined' || triggers[i].obj == obj) &&
-				(triggers[i].act === 'undefined' || triggers[i].act == act) &&
-				(triggers[i].arg === 'undefined' || triggers[i].arg == arg)
+				(typeof triggers[i].obj === 'undefined' || triggers[i].obj == obj) &&
+				(typeof triggers[i].act === 'undefined' || triggers[i].act == action) &&
+				(typeof triggers[i].arg === 'undefined' || triggers[i].arg == arg)
 			)
 				act(triggers[i].response.obj, triggers[i].response.act, triggers[i].response.arg);
 
-		var result = obj.actions[act].func(arg);
+		var result = obj.actions[action].func(arg);
 		if (result)
 		{
 			combat_log[tick_number] += result + '&';
@@ -127,6 +130,11 @@ function Game(account1, account2)
 		p.hand = [];
 		p.library = [];
 		p.life = STARTING_LIFE_TOTAL;
+		p.poison = 0;
+		p.opponent = (player == P1 ? P2 : P1);
+		p.lost = false;
+		p.won = false;
+		p.empty_draw;
 
 		for (i in account.deck)
 			for (j = 0; j < account.deck[i]; j++)
@@ -139,10 +147,11 @@ function Game(account1, account2)
 			return {
 				hand: p.hand,
 				life: p.life,
+				actions: Object.getOwnPropertyNames(p.actions),
 				player: player,
 				priority: priority,
 				active: active,
-				combat_log: combat_log
+				combat_log: combat_log,
 			};
 		};
 	}
@@ -151,16 +160,48 @@ function Game(account1, account2)
 
 	var GAME_SOURCE = "Base Rules";
 
-	grant(mtg, "start", GAME_SOURCE, function(){
-		players[P1] = new Player(P1, account1);
-		players[P2] = new Player(P2, account2);
+	players[P1] = new Player(P1, account1);
+	players[P2] = new Player(P2, account2);
 
-		for (var player of [players[P1], players[P2]])
-		{(function(){
-			var p = player;
+	grant(mtg, "check state", GAME_SOURCE, function(){
+		for (var p of [players[P1], players[P2]])
+		{
+			if (
+				p.life <= 0 ||
+				p.empty_draw ||
+				p.poison >= 10
+			)
+				p.lost = true;
+		}
+	});
+
+	grant(mtg, "change phase", GAME_SOURCE, function(new_phase){
+		phase = new_phase;
+		return "It is the " + new_phase + ".";
+	});
+
+	grant(mtg, "assign priority", GAME_SOURCE, function(player_id){
+		priority = player_id;
+		grant(players[player_id], "pass priority", GAME_SOURCE);
+		ungrant(players[players[player_id].opponent], "pass priority", GAME_SOURCE);
+	});
+
+	for (i of [players[P1], players[P2]])
+	{
+		(function(){
+			var p = i;
+
 			grant(p, "draw cards", GAME_SOURCE, function(n){
 				for (var i = 0; i < n; i++)
-					p.hand.push(p.library.pop());
+				{
+					if (!p.library.length)
+					{
+						n = i;
+						p.empty_draw = true;
+					}
+					else
+						p.hand.push(p.library.pop());
+				}
 				return p.name + " draws " + n + " card(s).";
 			});
 
@@ -174,21 +215,32 @@ function Game(account1, account2)
 				}
 				return p.name + " shuffles their library.";
 			});
-			act(p, "shuffle");
-			act(p, "draw cards", STARTING_HAND_SIZE);
-			ungrant(p, "shuffle", GAME_SOURCE);
-			ungrant(p, "draw cards", GAME_SOURCE);
-		})();}
-		act(mtg, "change phase", MAIN_PHASE_1);
-	});
 
-	grant(mtg, "change phase", GAME_SOURCE, function(new_phase){
-		phase = new_phase;
-		return "It is the " + new_phase + ".";
-	});
+			grant(p, "pass priority", GAME_SOURCE, function(){
+				act(mtg, "assign priority", p.opponent);
+			});
+		})();
+	}
+	active = P1;
 
-	act(mtg, "start");
-	ungrant(mtg, "start", GAME_SOURCE);
+	listen(
+		{obj: mtg, act: "change phase"},
+		{obj: mtg, act: "assign priority", arg: active}
+	);
+
+	listen(
+		{obj: mtg, act: "assign priority"},
+		{obj: mtg, act: "check state"}
+	);
+
+	for (i of [players[P1], players[P2]])
+	{
+		act(i, "shuffle");
+		act(i, "draw cards", STARTING_HAND_SIZE);
+		ungrant(i, "shuffle", GAME_SOURCE);
+		ungrant(i, "draw cards", GAME_SOURCE);
+	}
+	act(mtg, "change phase", MAIN_PHASE_1);
 
 	mtg.getUIData = function()
 	{
