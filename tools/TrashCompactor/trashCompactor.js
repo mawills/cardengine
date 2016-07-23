@@ -133,5 +133,6 @@ for(var key in cards){
 	cards[key].renameProperty('colorIdentity', 'i');
 
 };
-
-fs.writeFile('jsonOutput.json', JSON.stringify(cards));
+cards = JSON.stringify(cards);
+cards = cards.replace(/"(\w+)"\s*:/g, '$1:');
+fs.writeFile('jsonOutput.json', cards);
