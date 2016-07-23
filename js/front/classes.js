@@ -1,7 +1,5 @@
-function UI(player)
+function UI(mtg)
 {
-	"use strict";
-
 	function Card(name)
 	{
 		var id = name.toLowerCase().replace(/[^\w]/g, '');
@@ -59,12 +57,10 @@ function UI(player)
 		t.element = $("<img>",{ class: 'card', src: 'res/img/cards/' + id + '.jpg'}).click(select);
 	}
 
-	var
-		ui = this,
-	varend;
-
-	function update(data)
+	this.display = function()
 	{
+		var data = getUIData(mtg);
+
 		$('#hand').empty();
 		for (var i = 0; i < data.hand.length; i++)
 		{
@@ -87,11 +83,5 @@ function UI(player)
 			$(".active").removeClass("active");
 		else
 			$("#player2").addClass("active");
-	}
-
-	ui.display = function(mtg)
-	{
-		var data = mtg.getUIData();
-		update(data);
 	};
 }
