@@ -8,6 +8,8 @@ var
 	P2 = 1,
 	NO_PLAYER = 2,
 
+	GAME_SOURCE = "Base Rules",
+
 	// phases
 	PREGAME_PHASE   = 0,
 	BEGINNING_PHASE = "Beginning Phase",
