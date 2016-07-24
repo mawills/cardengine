@@ -10,6 +10,15 @@ function Game(account1, account2)
 
 	mtg.startGame = function()
 	{
+		grant(mtg, "check state",     GAME_SOURCE, mtg.checkState);
+		grant(mtg, "change phase",    GAME_SOURCE, mtg.changePhase);
+		grant(mtg, "assign priority", GAME_SOURCE, mtg.assignPriority);
+
+		listen(
+			{obj: mtg, act: "assign priority"},
+			{obj: mtg, act: "check state"}
+		);
+
 		mtg.players[P1] = new Player(P1, account1);
 		mtg.players[P2] = new Player(P2, account2);
 
@@ -17,6 +26,7 @@ function Game(account1, account2)
 		{
 			grant(p, "shuffle",       GAME_SOURCE, p.shuffleLibrary);
 			grant(p, "draw cards",    GAME_SOURCE, p.drawCards);
+			grant(p, "act",           GAME_SOURCE, p.takeAction);
 			grant(p, "pass priority", GAME_SOURCE, p.passPriority);
 
 			act(p, "shuffle");
@@ -25,16 +35,15 @@ function Game(account1, account2)
 			ungrant(p, "shuffle",    GAME_SOURCE);
 			ungrant(p, "draw cards", GAME_SOURCE);
 
+			listen(
+				{obj: mtg, act: "assign priority", arg: p.id},
+				{obj: p, act: "act", getArg: function() { return mtg.priority; } }
+			);
 		}
 
 		listen(
 			{obj: mtg, act: "change phase"},
 			{obj: mtg, act: "assign priority", getArg: function() { return mtg.active; } }
-		);
-
-		listen(
-			{obj: mtg, act: "assign priority"},
-			{obj: mtg, act: "check state"}
 		);
 
 		act(mtg, "change phase", MAIN_PHASE_1);
@@ -61,9 +70,11 @@ function Game(account1, account2)
 
 	mtg.assignPriority = function(player_id)
 	{
+		if (mtg.priority != NO_PLAYER)
+			ungrant(mtg.players[mtg.priority], "pass priority", GAME_SOURCE);
+		if (player_id != NO_PLAYER)
+			grant(mtg.players[player_id], "pass priority", GAME_SOURCE);
 		mtg.priority = player_id;
-		grant(mtg.players[player_id], "pass priority", GAME_SOURCE);
-		ungrant(mtg.players[mtg.players[player_id].opponent], "pass priority", GAME_SOURCE);
 	};
 }
 
@@ -100,11 +111,13 @@ function Player(player, account)
 	p.library = [];
 	p.life = STARTING_LIFE_TOTAL;
 	p.poison = 0;
+	p.id = player;
 	p.opponent = (player == P1 ? P2 : P1);
 	p.lost = false;
 	p.won = false;
 	p.empty_draw;
 	p.devotion = {};
+	p.interface = new Interface(p);
 
 	(function(){
 		var i,j;
@@ -146,5 +159,16 @@ function Player(player, account)
 	p.passPriority = function()
 	{
 		act(mtg, "assign priority", p.opponent);
+	};
+
+	p.takeAction = function()
+	{
+		new Promise(function(resolve){
+			p.interface.attemptAction.resolve = resolve;
+		}).then(function(val){
+			delete p.interface.attemptAction.resolve;
+			act(p, val.action, val.arg);
+			p.interface.requestUIUpdate();
+		});
 	};
 }

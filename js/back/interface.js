@@ -1,32 +1,55 @@
-function getUIData(mtg)
+function Interface(p)
 {
-	var
-		p = mtg.players[mtg.priority],
-		legal_actions = [],
-		hand_card_names = [],
-		i
-	;
+	var game = this;
 
-	for (i of Object.getOwnPropertyNames(p.actions))
+	game.attemptAction = function(action, arg)
 	{
-		if (
-			Object.getOwnPropertyNames(p.actions[i].grantSources).length &&
-			!Object.getOwnPropertyNames(p.actions[i].forbidSources).length
-		)
-			legal_actions.push(i);
-	}
+		if (game.attemptAction.resolve)
+			game.attemptAction.resolve({action: action, arg: arg});
+		else
+			error("An illegal action was attempted by player " + p.id + ".");
+	};
 
-	for (i of p.hand)
+	var ui;
+	game.connect = function(_ui)
 	{
-		hand_card_names.push(i.name);
-	}
+		ui = _ui;
+		game.requestUIUpdate();
+	};
 
-	return {
-		log:      act.log,
-		hand:     hand_card_names,
-		life:     p.life,
-		priority: mtg.priority,
-		active:   mtg.active,
-		actions:  legal_actions
+	game.requestUIUpdate = function()
+	{
+		p = mtg.players[mtg.priority]; // temporary while doing both uis on one display
+		var
+			legal_actions = [],
+			hand_card_names = [],
+			i
+		;
+
+		for (i of Object.getOwnPropertyNames(p.actions))
+		{
+			if (i == "act")
+				continue;
+			if (
+				Object.getOwnPropertyNames(p.actions[i].grantSources).length &&
+				!Object.getOwnPropertyNames(p.actions[i].forbidSources).length
+			)
+				legal_actions.push(i);
+		}
+
+		for (i of p.hand)
+		{
+			hand_card_names.push(i.name);
+		}
+
+		ui.display({
+			player:   p.id, // temporary while doing both uis on one display
+			log:      act.log,
+			hand:     hand_card_names,
+			life:     p.life,
+			priority: mtg.priority,
+			active:   mtg.active,
+			actions:  legal_actions
+		});
 	};
 }

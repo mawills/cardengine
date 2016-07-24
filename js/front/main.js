@@ -1,12 +1,12 @@
 window.onload = function()
 {
-	var ui = new UI(mtg);
+	var ui = new UI(mtg, P1);
+	new UI(mtg, P2).connect();
 
 	var tabs = $('.tabs');
 	var panels = $('.panel');
 
 	tabs.on('click', 'li', function(e) {
-		console.log('wat');
 		var id = $(this).attr('data-target');
 
 		panels.filter(':not([hidden])').attr('hidden', true);
@@ -16,5 +16,5 @@ window.onload = function()
 		$(this).addClass('js-current');
 	});
 
-	ui.display();
+	ui.connect();
 }

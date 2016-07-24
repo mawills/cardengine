@@ -1,5 +1,6 @@
-function UI(mtg)
+function UI(mtg, player)
 {
+	var ui = this;
 	function Card(name)
 	{
 		var id = name.toLowerCase().replace(/[^\w]/g, '');
@@ -21,7 +22,7 @@ function UI(mtg)
 		types = types ? types.split('') : [];
 
 		if (text)
-			text = text.replace("\n", "<br>");
+			text = imgify(text);
 
 		if (!layout)
 			layout = NORMAL_LAYOUT;
@@ -57,12 +58,30 @@ function UI(mtg)
 		t.element = $("<img>",{ class: 'card', src: 'res/img/cards/' + id + '.jpg'}).click(select);
 	}
 
-	this.display = function()
+	function Action(action)
 	{
-		var data = getUIData(mtg);
+		var a = this;
+		function act()
+		{
+			console.log(player);
+			mtg.players[player].interface.attemptAction(action);
+		}
+		a.element = $("<div>", { class: 'action' }).click(act).text(action);
+	};
+
+	ui.connect = function()
+	{
+		mtg.players[player].interface.connect(ui);
+	};
+
+	ui.display = function(data)
+	{
+		var i;
+
+		player = data.player; // temporary while doing both uis on one display
 
 		$('#hand').empty();
-		for (var i = 0; i < data.hand.length; i++)
+		for (i = 0; i < data.hand.length; i++)
 		{
 			(function(){
 				var card = new Card(data.hand[i]);
@@ -70,18 +89,25 @@ function UI(mtg)
 			})();
 		}
 
+		$(".priority").removeClass("priority");
 		if (data.priority == data.player)
 			$("#player1").addClass("priority");
-		else if (data.priority == NO_PLAYER)
-			$(".priority").removeClass("priority");
-		else
+		else if (data.priority != NO_PLAYER)
 			$("#player2").addClass("priority");
 
+		$(".active").removeClass("active");
 		if (data.active == data.player)
 			$("#player1").addClass("active");
-		else if (data.active == NO_PLAYER)
-			$(".active").removeClass("active");
-		else
+		else if (data.active != NO_PLAYER)
 			$("#player2").addClass("active");
+
+		$("#stack").empty();
+		for (i of data.actions)
+		{
+			(function(){
+				var action = new Action(i);
+				$("#stack").append(action.element);
+			})();
+		}
 	};
 }

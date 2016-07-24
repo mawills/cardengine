@@ -44,6 +44,10 @@ img {
 	cursor: pointer;
 }
 
+.action {
+	cursor: pointer;
+}
+
 .player {
 	position: relative;
 	height: 47%;
@@ -133,12 +137,14 @@ img {
 }
 
 #stack {
+	padding: 15px;
 	position: absolute;
 	top: 0;
 	right: 0;
 	width: 20vw;
 	height: 100vh;
 	background-color: #500;
+	color: #FFF;
 }
 
 .player.priority {
@@ -204,4 +210,9 @@ ul.tabs li:focus, .js-current {background-color: #bfbfbf;}
 #selection-text {
 	margin-left: 5px;
 	margin-right: 5px;
+}
+
+#selection-text > img {
+	height: .8em;
+	width: .8em;
 }

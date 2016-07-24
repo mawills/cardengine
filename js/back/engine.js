@@ -77,7 +77,7 @@ function act(obj, action, arg)
 	if (!obj.actions[action] || !Object.getOwnPropertyNames(obj.actions[action].grantSources).length)
 	{
 		console.log(obj.name + " cannot " + action + ". (Not granted by any source.)");
-		return;
+		return false;
 	}
 
 	if (Object.getOwnPropertyNames(obj.actions[action].forbidSources).length)
@@ -86,7 +86,7 @@ function act(obj, action, arg)
 		for (i = 0; i < obj.actions[action].forbid.length; i++)
 			forbid_message += obj.actions[action].forbid[i] + ', ';
 		console.log(forbid_message.slice(0, -2) + ')');
-		return;
+		return false;
 	}
 
 	act.tick_number++;
@@ -108,6 +108,7 @@ function act(obj, action, arg)
 		act.log[act.tick_number] = result;
 		console.log(result);
 	}
+	return true;
 }
 
 act.tick_number = 0;
