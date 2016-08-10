@@ -142,7 +142,10 @@ function StackItem(source, properties)
 
 function Card(name, owner)
 {
+	Card.id = ++Card.id || 1;
+
 	var c = this;
+	c.id = Card.id;
 	c.name = name;
 	c.owner = owner;
 	c.layout         = CARDS[name][LAYOUT_ATTRIBUTE];

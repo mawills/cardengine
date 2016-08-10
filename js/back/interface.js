@@ -22,7 +22,7 @@ function Interface(p)
 		p = mtg.players[mtg.priority]; // temporary while doing both uis on one display
 		var
 			legal_actions = [],
-			hand_card_names = [],
+			hand_cards = {},
 			i
 		;
 
@@ -39,13 +39,13 @@ function Interface(p)
 
 		for (i of p.hand)
 		{
-			hand_card_names.push(i.name);
+			hand_cards[i.id] = i.name;
 		}
 
 		ui.display({
 			player:   p.id, // temporary while doing both uis on one display
 			log:      act.log,
-			hand:     hand_card_names,
+			hand:     hand_cards,
 			life:     p.life,
 			mana:     p.mana,
 			priority: mtg.priority,
