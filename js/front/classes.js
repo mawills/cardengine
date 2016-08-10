@@ -8,8 +8,8 @@ function UI(mtg, player)
 
 		var
 			layout     = c[LAYOUT_ATTRIBUTE],
-			supertypes = c[SUPERTYPES_ATTRIBUTE],
-			types      = c[TYPES_ATTRIBUTE],
+			supertypes = c[SUPERTYPES_ATTRIBUTE] || "",
+			types      = c[TYPES_ATTRIBUTE] || "",
 			subtypes   = c[SUBTYPES_ATTRIBUTE],
 			text       = c[ORACLE_TEXT_ATTRIBUTE],
 			type_text = "",
@@ -18,8 +18,8 @@ function UI(mtg, player)
 			i,
 		varend;
 
-		supertypes = supertypes ? supertypes.split('') : [];
-		types = types ? types.split('') : [];
+		supertypes = supertypes.split('');
+		types = types.split('');
 
 		if (text)
 			text = imgify(text);
@@ -63,7 +63,6 @@ function UI(mtg, player)
 		var a = this;
 		function act()
 		{
-			console.log(player);
 			mtg.players[player].interface.attemptAction(action);
 		}
 		a.element = $("<div>", { class: 'action' }).click(act).text(action);

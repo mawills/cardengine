@@ -47,6 +47,7 @@ function Interface(p)
 			log:      act.log,
 			hand:     hand_card_names,
 			life:     p.life,
+			mana:     p.mana,
 			priority: mtg.priority,
 			active:   mtg.active,
 			actions:  legal_actions
