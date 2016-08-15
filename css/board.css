@@ -45,7 +45,11 @@ img {
 }
 
 .action {
+	padding: 5px;
+	color: black;
 	cursor: pointer;
+	border: 1px solid black;
+	background-color: #EEE;
 }
 
 .player {

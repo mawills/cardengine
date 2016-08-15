@@ -1,9 +1,9 @@
 function UI(mtg, player)
 {
 	var ui = this;
-	function Card(name)
+	function Card(id, name)
 	{
-		var id = name.toLowerCase().replace(/[^\w]/g, '');
+		var img = name.toLowerCase().replace(/[^\w]/g, '') + '.jpg';
 		var c = CARDS[name];
 
 		var
@@ -53,19 +53,22 @@ function UI(mtg, player)
 			$("#selection-name").html(name + "<br>");
 			$("#selection-type").html(type_text + "<br>");
 			$("#selection-text").html(text);
+			
+			$('#selection-actions').empty();
+			$("#selection-actions").append(new Action("Play " + name, "play card", id).element);
 		}
 
-		t.element = $("<img>",{ class: 'card', src: 'res/img/cards/' + id + '.jpg'}).click(select);
+		t.element = $("<img>", { class: 'card', src: 'res/img/cards/' + img }).click(select);
 	}
 
-	function Action(action)
+	function Action(label, action, arg)
 	{
 		var a = this;
 		function act()
 		{
-			mtg.players[player].interface.attemptAction(action);
+			mtg.players[player].interface.attemptAction(action, arg);
 		}
-		a.element = $("<div>", { class: 'action' }).click(act).text(action);
+		a.element = $("<div>", { class: 'action' }).click(act).text(label);
 	};
 
 	ui.connect = function()
@@ -80,12 +83,15 @@ function UI(mtg, player)
 		player = data.player; // temporary while doing both uis on one display
 
 		$('#hand').empty();
-		for (i = 0; i < data.hand.length; i++)
+		for (var card_id in data.hand)
 		{
-			(function(){
-				var card = new Card(data.hand[i]);
-				$("#hand").append(card.element);
-			})();
+			if (data.hand.hasOwnProperty(card_id))
+			{
+				(function(){
+					var card = new Card(card_id, data.hand[card_id]);
+					$("#hand").append(card.element);
+				})();
+			}
 		}
 
 		$(".priority").removeClass("priority");
