@@ -10,7 +10,6 @@ var
 	NO_PLAYER = 2,
 
 	GAME_SOURCE      = "base rules",
-	CARD_TEXT_SOURCE = "card text",
 
 	// phases
 	PREGAME_PHASE   = 0,

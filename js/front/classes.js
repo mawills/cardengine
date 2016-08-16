@@ -52,10 +52,10 @@ function UI(mtg, player)
 
 			$("#selection-name").html(name + "<br>");
 			$("#selection-type").html(type_text + "<br>");
-			$("#selection-text").html(text);
-			
+			$("#selection-text").empty().html(text);
+
 			$('#selection-actions').empty();
-			$("#selection-actions").append(new Action("Play " + name, "play card", id).element);
+			$("#selection-actions").append(new Action("Play " + name, "select card", id).element);
 		}
 
 		t.element = $("<img>", { class: 'card', src: 'res/img/cards/' + img }).click(select);
@@ -107,12 +107,52 @@ function UI(mtg, player)
 			$("#player2").addClass("active");
 
 		$("#stack").empty();
-		for (i of data.actions)
+		for (var packet of data.player_actions)
 		{
-			(function(){
-				var action = new Action(i);
-				$("#stack").append(action.element);
-			})();
+			for (i of packet)
+			{
+				switch (i)
+				{
+				case "select card":
+					break;
+				case "pass priority":
+				case "pay cost":
+				case "act":
+					(function(){
+						var action = new Action(i.toUpperCase(), i);
+						$("#stack").append(action.element);
+					})();
+					break;
+				default:
+					console.log("error one: " + i);
+					break;
+				}
+			}
+		}
+		for (packet of data.hand_card_actions)
+		{
+			for (i of packet)
+			{
+				switch (i)
+				{
+				case "be played":
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		for (packet of data.board_item_actions)
+		{
+			for (i of packet)
+			{
+				switch (i)
+				{
+				default:
+					console.log("error three: " + i);
+					break;
+				}
+			}
 		}
 	};
 }

@@ -34,7 +34,7 @@ function Game(account1, account2)
 			ungrant(p, "draw cards", GAME_SOURCE);
 
 			grant(p, "pass priority", GAME_SOURCE, p.passPriority);
-			grant(p, "play card",     GAME_SOURCE, p.playCard);
+			grant(p, "select card",     GAME_SOURCE, p.playCard);
 			grant(p, "act",           GAME_SOURCE, p.takeAction);
 
 			listen(
@@ -86,59 +86,35 @@ function Mana(color)
 	m.color = color;
 }
 
-function Effect(cost, action)
+function BoardItem(c, controller)
 {
-	var e = this;
+	var b = this;
+	b.controller = c.owner;
+	b.tapped = false;
 
-	e.act = function()
+	grant(b, "tap", GAME_SOURCE, b.tap);
+
+	if (c.types.indexOf("Island") != -1)
 	{
-		var i, j;
-		var p = mtg.players[e.controller];
-		for (i in cost)
-		{
-			switch(cost[i].type)
-			{
-			case "mana":
-				break;
-			case "tap":
-				grant(e.controller, "")
+		grant(b, "generate mana", function(){
+			mtg.players[controller].mana.push(new Mana('U'));
+		});
+	}
 
-			}
-		}
+	b.tap = function()
+	{
+		c.tapped = true;
+		forbid(c, "tap", GAME_SOURCE);
+	};
 
+	b.untap = function()
+	{
+		c.tapped = false;
+		unforbid(c, "tap", GAME_SOURCE);
 	};
 }
 
-function BoardItem(source, properties)
-{
-	var b = this;
-	b.name           = properties.name;
-	b.supertypes     = properties.supertypes;
-	b.types          = properties.types;
-	b.subtypes       = properties.subtypes;
-	b.mana_cost      = properties.mana_cost;
-	b.power          = properties.power;
-	b.toughness      = properties.toughness;
-	b.colors         = properties.colors;
-	b.color_identity = properties.color_identity;
-	// b.converted_mana_cost;
-	// b.abilities;
-}
-
-function StackItem(source, properties)
-{
-	var s = this;
-	s.supertypes     = properties.supertypes;
-	s.types          = properties.types;
-	s.subtypes       = properties.subtypes;
-	s.mana_cost      = properties.mana_cost;
-	s.power          = properties.power;
-	s.toughness      = properties.toughness;
-	s.colors         = propertiescolors.
-	s.color_identity = properties.color_identity;
-	s.converted_mana_cost = properties.converted_mana_cost;
-	// s.abilities;
-}
+function StackItem(c, controller){}
 
 function Card(name, owner)
 {
@@ -158,7 +134,16 @@ function Card(name, owner)
 	c.colors         = CARDS[name][COLORS_ATTRIBUTE]
 	c.color_identity = CARDS[name][COLOR_IDENTITY_ATTRIBUTE];
 	c.converted_mana_cost;
-	c.abilities;
+
+	c.becomeBoardItem = function()
+	{
+		mtg.battlefield.push(new BoardItem(c));
+	};
+
+	c.becomeStackItem = function()
+	{
+		mtg.stack.push(new StackItem(c));
+	};
 
 	(function(){
 		var i;
@@ -167,47 +152,13 @@ function Card(name, owner)
 
 		if (c.types.indexOf("Land") != -1)
 		{
-			c.effects.push(function(c){
-				mtg.battlefield.push(new BoardItem(c));
-			});
+			grant(c, "be played", GAME_SOURCE, c.becomeBoardItem);
+		}
+		else
+		{
+			grant(c, "be played", GAME_SOURCE, c.becomeStackItem);
 		}
 	})();
-
-	c.play = function()
-	{
-		// act(c, )
-	};
-
-	c.grantControl = function(p)
-	{
-		c.controller = p.id;
-	};
-
-	c.becomePermanent = function()
-	{
-		c.tapped = false;
-		grant(c, "tap", GAME_SOURCE, c.tap);
-		mtg.battlefield.push(c);
-	};
-
-	c.initAbilities = function()
-	{
-		if (c.types.indexOf("Forest"))
-			grant(c, "card text", CARD_TEXT_SOURCE);
-		c.abilities
-	};
-
-	c.tap = function()
-	{
-		c.tapped = true;
-		forbid(c, "tap", GAME_SOURCE);
-	};
-
-	c.untap = function()
-	{
-		c.tapped = false;
-		unforbid(c, "tap", GAME_SOURCE);
-	};
 }
 
 function Player(player, account)
@@ -246,7 +197,6 @@ function Player(player, account)
 			else
 			{
 				var c = p.library.pop();
-				grant(c, "be played", GAME_SOURCE, c.play);
 				p.hand.push(c);
 			}
 		}
@@ -273,11 +223,15 @@ function Player(player, account)
 	p.playCard = function(c)
 	{
 		ungrant(p, "pass priority", GAME_SOURCE);
-		ungrant(p, "play card", GAME_SOURCE);
-		for (var i in c.abilities)
-		{
-			c.abilities[i].act();
-		}
+		ungrant(p, "select card",   GAME_SOURCE);
+		grant  (p, "pay cost",      GAME_SOURCE, p.payCost);
+	};
+
+	p.payCost = function(c)
+	{
+		act  (c, "be played",     GAME_SOURCE, c.id);
+		grant(p, "pass priority", GAME_SOURCE);
+		grant(p, "select card",   GAME_SOURCE);
 	};
 
 	p.takeAction = function()
