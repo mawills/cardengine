@@ -2,13 +2,16 @@ var
 	// game constants
 	STARTING_HAND_SIZE = 7,
 	STARTING_LIFE_TOTAL = 20,
+	EMPTY_MANA_POOL = {B:[],G:[],R:[],U:[],W:[],C:[],X:[]},
+
+	COLORS = ['W', 'U', 'B', 'G', 'R', 'C'],
 
 	// player ids
 	P1 = 0,
 	P2 = 1,
 	NO_PLAYER = 2,
 
-	GAME_SOURCE = "Base Rules",
+	GAME_SOURCE      = "base rules",
 
 	// phases
 	PREGAME_PHASE   = 0,

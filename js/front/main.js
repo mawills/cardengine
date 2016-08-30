@@ -1,7 +1,7 @@
 window.onload = function()
 {
 	var ui = new UI(mtg, P1);
-	new UI(mtg, P2).connect();
+	new UI(mtg, P2).connect(); // temporary while doing both uis on one display
 
 	var tabs = $('.tabs');
 	var panels = $('.panel');

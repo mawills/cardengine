@@ -52,7 +52,7 @@ function forbid(obj, name, source)
 	obj.actions[name].forbidSources[source] = true;
 }
 
-function unforbid()
+function unforbid(obj, name, source)
 {
 	if (!obj.actions[name].forbidSources[source])
 		error("An illegal unforbid was attempted.");

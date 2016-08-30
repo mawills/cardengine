@@ -7,6 +7,7 @@ function Game(account1, account2)
 	mtg.players = [];
 	mtg.stack = [];
 	mtg.phase = PREGAME_PHASE;
+	mtg.battlefield = [];
 
 	mtg.startGame = function()
 	{
@@ -24,16 +25,17 @@ function Game(account1, account2)
 
 		for (var p of mtg.players)
 		{
-			grant(p, "shuffle",       GAME_SOURCE, p.shuffleLibrary);
-			grant(p, "draw cards",    GAME_SOURCE, p.drawCards);
-			grant(p, "act",           GAME_SOURCE, p.takeAction);
-			grant(p, "pass priority", GAME_SOURCE, p.passPriority);
+			grant  (p, "shuffle", GAME_SOURCE, p.shuffleLibrary);
+			act    (p, "shuffle");
+			ungrant(p, "shuffle", GAME_SOURCE);
 
-			act(p, "shuffle");
-			act(p, "draw cards", STARTING_HAND_SIZE);
-
-			ungrant(p, "shuffle",    GAME_SOURCE);
+			grant  (p, "draw cards", GAME_SOURCE, p.drawCards);
+			act    (p, "draw cards", STARTING_HAND_SIZE);
 			ungrant(p, "draw cards", GAME_SOURCE);
+
+			grant(p, "pass priority", GAME_SOURCE, p.passPriority);
+			grant(p, "select card",     GAME_SOURCE, p.playCard);
+			grant(p, "act",           GAME_SOURCE, p.takeAction);
 
 			listen(
 				{obj: mtg, act: "assign priority", arg: p.id},
@@ -78,16 +80,48 @@ function Game(account1, account2)
 	};
 }
 
-function Mana()
+function Mana(color)
 {
 	var m = this;
-	m.color;
-	m.source;
+	m.color = color;
 }
+
+function BoardItem(c, controller)
+{
+	var b = this;
+	b.controller = c.owner;
+	b.tapped = false;
+
+	grant(b, "tap", GAME_SOURCE, b.tap);
+
+	if (c.types.indexOf("Island") != -1)
+	{
+		grant(b, "generate mana", function(){
+			mtg.players[controller].mana.push(new Mana('U'));
+		});
+	}
+
+	b.tap = function()
+	{
+		c.tapped = true;
+		forbid(c, "tap", GAME_SOURCE);
+	};
+
+	b.untap = function()
+	{
+		c.tapped = false;
+		unforbid(c, "tap", GAME_SOURCE);
+	};
+}
+
+function StackItem(c, controller){}
 
 function Card(name, owner)
 {
+	Card.id = ++Card.id || 1;
+
 	var c = this;
+	c.id = Card.id;
 	c.name = name;
 	c.owner = owner;
 	c.layout         = CARDS[name][LAYOUT_ATTRIBUTE];
@@ -100,7 +134,31 @@ function Card(name, owner)
 	c.colors         = CARDS[name][COLORS_ATTRIBUTE]
 	c.color_identity = CARDS[name][COLOR_IDENTITY_ATTRIBUTE];
 	c.converted_mana_cost;
-	c.abilities;
+
+	c.becomeBoardItem = function()
+	{
+		mtg.battlefield.push(new BoardItem(c));
+	};
+
+	c.becomeStackItem = function()
+	{
+		mtg.stack.push(new StackItem(c));
+	};
+
+	(function(){
+		var i;
+		for (i in c.types.split(''))
+			c.types[i] = TYPES[c.types[i]];
+
+		if (c.types.indexOf("Land") != -1)
+		{
+			grant(c, "be played", GAME_SOURCE, c.becomeBoardItem);
+		}
+		else
+		{
+			grant(c, "be played", GAME_SOURCE, c.becomeStackItem);
+		}
+	})();
 }
 
 function Player(player, account)
@@ -118,6 +176,7 @@ function Player(player, account)
 	p.empty_draw;
 	p.devotion = {};
 	p.interface = new Interface(p);
+	p.mana = [];
 
 	(function(){
 		var i,j;
@@ -159,6 +218,20 @@ function Player(player, account)
 	p.passPriority = function()
 	{
 		act(mtg, "assign priority", p.opponent);
+	};
+
+	p.playCard = function(c)
+	{
+		ungrant(p, "pass priority", GAME_SOURCE);
+		ungrant(p, "select card",   GAME_SOURCE);
+		grant  (p, "pay cost",      GAME_SOURCE, p.payCost);
+	};
+
+	p.payCost = function(c)
+	{
+		act  (c, "be played",     GAME_SOURCE, c.id);
+		grant(p, "pass priority", GAME_SOURCE);
+		grant(p, "select card",   GAME_SOURCE);
 	};
 
 	p.takeAction = function()
