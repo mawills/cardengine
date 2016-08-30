@@ -4,6 +4,8 @@ var
 	STARTING_LIFE_TOTAL = 20,
 	EMPTY_MANA_POOL = {B:[],G:[],R:[],U:[],W:[],C:[],X:[]},
 
+	COLORS = ['W', 'U', 'B', 'G', 'R', 'C'],
+
 	// player ids
 	P1 = 0,
 	P2 = 1,

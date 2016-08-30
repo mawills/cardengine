@@ -78,6 +78,14 @@ img {
 	height: 50px;
 	right: 0;
 	background-color: #008;
+	color: white;
+}
+
+.stats > img {
+	padding-top: 10px;
+	padding-left: 10px;
+	height: 25px;
+	width: 25px;
 }
 
 #p1_stats {

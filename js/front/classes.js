@@ -1,5 +1,8 @@
 function UI(mtg, player)
 {
+	var actions;
+	var pay_cost;
+
 	var ui = this;
 	function Card(id, name)
 	{
@@ -71,17 +74,26 @@ function UI(mtg, player)
 		a.element = $("<div>", { class: 'action' }).click(act).text(label);
 	};
 
+	function addManaToManaPool(color)
+	{
+		if(pay_cost)
+			mtg.players[player].interface.attemptAction("pay cost", color);
+	}
+
 	ui.connect = function()
 	{
 		mtg.players[player].interface.connect(ui);
 	};
 
+	// Updates the display on each server tick
 	ui.display = function(data)
 	{
 		var i;
 
+		actions = data.actions;
 		player = data.player; // temporary while doing both uis on one display
 
+		// Displays cards in hard
 		$('#hand').empty();
 		for (var card_id in data.hand)
 		{
@@ -94,17 +106,39 @@ function UI(mtg, player)
 			}
 		}
 
+		// Displays priority border
 		$(".priority").removeClass("priority");
 		if (data.priority == data.player)
 			$("#player1").addClass("priority");
 		else if (data.priority != NO_PLAYER)
 			$("#player2").addClass("priority");
 
+		// Displays active player highlighting
 		$(".active").removeClass("active");
 		if (data.active == data.player)
 			$("#player1").addClass("active");
 		else if (data.active != NO_PLAYER)
 			$("#player2").addClass("active");
+
+		// Displays mana pools
+		$('.stats').empty();
+		for(i of COLORS)
+		{
+			// TODO combine the two following code blocks into 1 for loop that iterates over data.NUM_PLAYERS
+			if(data.p1_mana[i])
+			{
+				var mana_img = imgify('{' + i + '}');
+				//mana_img.click({color: i}, addManaToManaPool);
+				$("#p1_stats").append(mana_img + ": " + data.p1_mana[i] + ' ');
+			}
+
+			if(data.p2_mana[i])
+			{
+				var mana_img = imgify('{' + i + '}')
+				//mana_img.click({color: i}, addManaToManaPool);
+				$("#p2_stats").append(mana_img + ": " + data.p2_mana[i] + ' ');
+			}
+		}
 
 		$("#stack").empty();
 		for (var packet of data.player_actions)
@@ -117,6 +151,7 @@ function UI(mtg, player)
 					break;
 				case "pass priority":
 				case "pay cost":
+				case "cancel":
 				case "act":
 					(function(){
 						var action = new Action(i.toUpperCase(), i);
@@ -136,6 +171,9 @@ function UI(mtg, player)
 				switch (i)
 				{
 				case "be played":
+				case "be revealed":
+				case "be discarded":
+				case "be exiled":
 					break;
 				default:
 					break;
