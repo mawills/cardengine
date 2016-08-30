@@ -162,7 +162,7 @@ function UI(mtg, player)
 					console.log("error one: " + i);
 					break;
 				}
-			}
+			}asdfasdf
 		}
 		for (packet of data.hand_card_actions)
 		{
