@@ -94,6 +94,34 @@ function UI(mtg, player)
 			}
 		}
 
+		$('.battlefield').empty(); 
+		for(var battlefield of [data.p1_battlefield, data.p2_battlefield])
+		{
+			for (var permanent in battlefield)
+			{
+				if (battlefield.hasOwnProperty(permanent))
+				{
+					(function(){
+						var card = new Card(permanent, permanent);
+						if(battlefield == 0)
+						{
+							if(card.types === 'L')
+								$("#p1_battlefield_land").append(card.element);
+							else
+								$("#p1_battlefield").append(card.element);
+						}
+						else
+						{
+							if(card.types === 'L')
+								$("#p2_battlefield_land").append(card.element);
+							else
+								$("p2_battlefield").append(card.element);
+						}
+					})();
+				}
+			}
+		}
+
 		$(".priority").removeClass("priority");
 		if (data.priority == data.player)
 			$("#player1").addClass("priority");

@@ -67,7 +67,43 @@ function Interface(p)
 			player_actions: player_actions,
 			hand_card_actions: hand_card_actions,
 			board_item_actions: board_item_actions,
-			hand:     hand_cards
+			hand:     hand_cards, //should be passing the card object
+			p1_battlefield: 
+			{	"Island":
+				{
+					"supertypes":["Basic"],
+					"t":"L",
+					"s":["Island"],
+					"i":"U"
+				}, 
+				"Forest":
+				{
+					"supertypes":["Basic"],
+					"t":"L",
+					"s":["Forest"],
+					"i":"G"
+				},
+				"Death's Shadow":
+				{
+					"m":"{B}",
+					"C":"Black",
+					"t":"C",
+					"s":["Avatar"],
+					"x":"Death's Shadow gets -X/-X, where X is your life total.",
+					"P":"13",
+					"T":"13",
+					"i":"B"
+				}
+			},
+			p2_battlefield:
+			{	"Mountain" :
+				{
+					"supertypes":["Basic"],
+					"t":"L",
+					"s":["Mountain"],
+					"i":"R"	
+				}
+			}
 		});
 	};
 }
