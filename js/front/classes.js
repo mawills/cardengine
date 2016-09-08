@@ -88,7 +88,7 @@ function UI(mtg, player)
 	// Updates the display on each server tick
 	ui.display = function(data)
 	{
-		var i;
+		var i, j;
 
 		actions = data.actions;
 		player = data.player; // temporary while doing both uis on one display
@@ -114,8 +114,16 @@ function UI(mtg, player)
 				if (battlefield.hasOwnProperty(permanent))
 				{
 					(function(){
-						var card = n 			{
-							console.log('dicks')
+						var card = new Card(permanent, permanent);
+						if(battlefield = board[0])
+						{
+							if(card.types === 'L')
+								$("#p1_battlefield_land").append(card.element);
+							else
+								$("#p1_battlefield").append(card.element);	
+						}
+						else 
+						{
 							if(card.types === 'L')
 								$("#p2_battlefield_land").append(card.element);
 							else
@@ -142,22 +150,23 @@ function UI(mtg, player)
 			$("#player2").addClass("active");
 
 		// Displays mana pools
-		$('.stats').empty();
-		for(i of COLORS)
+		$(".mana").empty();
+		for(i in data.mana)
 		{
-			// TODO combine the two following code blocks into 1 for loop that iterates over data.NUM_PLAYERS
-			if(data.p1_mana[i])
+			for (j of Object.getOwnPropertyNames(data.mana[i]))
 			{
-				var mana_img = imgify('{' + i + '}');
 				//mana_img.click({color: i}, addManaToManaPool);
 				$("#p1_stats").append(mana_img + ": " + data.p1_mana[i] + ' ');
-			}
+				if (COLORS.indexOf(j) !== -1)
+				{
+					mana_img = imgify('{' + j + '}');
 
-			if(data.p2_mana[i])
-			{
-				var mana_img = imgify('{' + i + '}')
-				//mana_img.click({color: i}, addManaToManaPool);
-				$("#p2_stats").append(mana_img + ": " + data.p2_mana[i] + ' ');
+					if(i == 0){
+						$("#p1_mana").append(mana_img + ": " + data.mana[i][j]);
+					}
+					else
+						$("#p2_mana").append(mana_img + ": " + data.mana[i][j]);
+				}
 			}
 		}
 
