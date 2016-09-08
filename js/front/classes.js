@@ -105,39 +105,29 @@ function UI(mtg, player)
 				})();
 			}
 		}
-
-<<<<<<< HEAD
-		$('.battlefield').empty(); 
-		for(var battlefield of [data.p1_battlefield, data.p2_battlefield])
+		$('.battlefield').empty();
+		var board = [data.p1_battlefield, data.p2_battlefield];
+		for(var battlefield of board)
 		{
 			for (var permanent in battlefield)
 			{
 				if (battlefield.hasOwnProperty(permanent))
 				{
 					(function(){
-						var card = new Card(permanent, permanent);
-						if(battlefield == 0)
-						{
-							if(card.types === 'L')
-								$("#p1_battlefield_land").append(card.element);
-							else
-								$("#p1_battlefield").append(card.element);
-						}
-						else
-						{
+						var card = n 			{
+							console.log('dicks')
 							if(card.types === 'L')
 								$("#p2_battlefield_land").append(card.element);
 							else
-								$("p2_battlefield").append(card.element);
+								$("#p2_battlefield").append(card.element);
 						}
 					})();
 				}
 			}
 		}
 
-=======
 		// Displays priority border
->>>>>>> e8c6b2c7de2290afd2415736c8b78733271155e8
+
 		$(".priority").removeClass("priority");
 		if (data.priority == data.player)
 			$("#player1").addClass("priority");
