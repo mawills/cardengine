@@ -16,7 +16,7 @@ var
 	// phases
 	PREGAME_PHASE   = 0,
 	BEGINNING_PHASE = "Beginning Phase",
-	MAIN_PHASE_1    = "pre-combat Main Phase",
+	MAIN_PHASE_1    = "Pre-combat Main Phase",
 	COMBAT_PHASE    = "Combat Phase",
 	MAIN_PHASE_2    = "Main Phase",
 	ENDING_PHASE    = "Ending Phase",

@@ -1,5 +1,7 @@
 function UI(mtg, player)
 {
+	var NUM_PLAYERS = 2;
+
 	var actions;
 	var pay_cost;
 
@@ -78,7 +80,7 @@ function UI(mtg, player)
 	{
 		if(pay_cost)
 			mtg.players[player].interface.attemptAction("pay cost", color);
-	}
+	};
 
 	ui.connect = function()
 	{
@@ -88,7 +90,7 @@ function UI(mtg, player)
 	// Updates the display on each server tick
 	ui.display = function(data)
 	{
-		var i;
+		var i, j;
 
 		actions = data.actions;
 		player = data.player; // temporary while doing both uis on one display
@@ -121,24 +123,23 @@ function UI(mtg, player)
 			$("#player2").addClass("active");
 
 		// Displays mana pools
-		$('.stats').empty();
-		for(i of COLORS)
+		$(".mana").empty();
+		for(i in data.mana)
 		{
-			// TODO combine the two following code blocks into 1 for loop that iterates over data.NUM_PLAYERS
-			if(data.p1_mana[i])
+			for (j of Object.getOwnPropertyNames(data.mana[i]))
 			{
-				var mana_img = imgify('{' + i + '}');
-				//mana_img.click({color: i}, addManaToManaPool);
-				$("#p1_stats").append(mana_img + ": " + data.p1_mana[i] + ' ');
-			}
+				if (COLORS.indexOf(j) !== -1)
+				{
+					mana_img = imgify('{' + j + '}');
 
-			if(data.p2_mana[i])
-			{
-				var mana_img = imgify('{' + i + '}')
-				//mana_img.click({color: i}, addManaToManaPool);
-				$("#p2_stats").append(mana_img + ": " + data.p2_mana[i] + ' ');
+					if(i == 0){
+						$("#p1_mana").append(mana_img + ": " + data.mana[i][j]);
+					}
+					else
+						$("#p2_mana").append(mana_img + ": " + data.mana[i][j]);
+				}
 			}
-		}
+		};
 
 		$("#stack").empty();
 		for (var packet of data.player_actions)

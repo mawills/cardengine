@@ -58,12 +58,10 @@ function Interface(p)
 		}
 
 		ui.display({
-			p1_mana:  {G:3, R:2},
-			p2_mana:  {W:1, C:1},
 			player:   p.id, // temporary while doing both uis on one display
 			log:      act.log,
 			life:     p.life,
-			mana:     p.mana,
+			mana:     [{G:3, R:2}, {W:1, C:1}],
 			priority: mtg.priority,
 			active:   mtg.active,
 			player_actions: player_actions,
