@@ -88,6 +88,14 @@ img {
 	width: 25px;
 }
 
+#p1_deck {
+	float: left;
+}
+
+#p2_graveyard {
+	float: left;
+}
+
 #p1_stats {
 	top: 0;
 }
@@ -124,7 +132,7 @@ img {
 	background-color: #bfbfbf;
 }
 
-#battlefield {
+#board {
 	position: absolute;
 	top: 0;
 	left: 15vw;
