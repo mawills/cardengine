@@ -72,6 +72,10 @@ img {
 	background-color: #222;
 }
 
+.battlefield img {
+
+}
+
 .stats {
 	position: absolute;
 	width: 500px;
@@ -88,7 +92,7 @@ img {
 	width: 25px;
 }
 
-#p1_deck {
+.library_space {
 	float: left;
 }
 

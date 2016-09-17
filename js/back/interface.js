@@ -68,14 +68,14 @@ function Interface(p)
 			hand_card_actions: hand_card_actions,
 			board_item_actions: board_item_actions,
 			hand:     hand_cards, //should be passing the card object
-			p1_battlefield: 
+			p1_battlefield:
 			{	"Island":
 				{
 					"supertypes":["Basic"],
 					"t":"L",
 					"s":["Island"],
 					"i":"U"
-				}, 
+				},
 				"Forest":
 				{
 					"supertypes":["Basic"],
@@ -96,12 +96,23 @@ function Interface(p)
 				}
 			},
 			p2_battlefield:
-			{	"Mountain" :
+			{	"Mountain":
 				{
 					"supertypes":["Basic"],
 					"t":"L",
 					"s":["Mountain"],
-					"i":"R"	
+					"i":"R"
+				},
+				"Sakura-Tribe Elder":
+				{
+					"m":"{1}{G}",
+					"C":"Green",
+					"t":"C",
+					"s":["Snake","Shaman"],
+					"x":"Sacrifice Sakura-Tribe Elder: Search your library for a basic land card, put that card onto the battlefield tapped, then shuffle your library.",
+					"P":"1",
+					"T":"1",
+					"i":"G"
 				}
 			}
 		});
