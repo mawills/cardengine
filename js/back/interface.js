@@ -7,7 +7,7 @@ function Interface(p)
 		if (game.attemptAction.resolve)
 			game.attemptAction.resolve({action: action, arg: arg});
 		else
-			error("An illegal action was attempted by player " + p.id + "." + action);
+			error("An illegal action was attempted by player " + p.id + ": " + action);
 	};
 
 	var ui;
@@ -37,7 +37,7 @@ function Interface(p)
 	{
 		p = mtg.players[mtg.priority]; // temporary while doing both uis on one display
 		var
-			player_actions = [],
+			player_actions =[],
 			hand_card_actions = [],
 			board_item_actions= [],
 			hand_cards = {},

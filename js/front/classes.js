@@ -136,16 +136,16 @@ function UI(mtg, player)
 						if(battlefield == board[0])
 						{
 							if(battlefield[permanent]['t'] == 'L')
-								$("#p1_battlefield_land").append(card.element);
+								$("#p1-battlefield-land").append(card.element);
 							else
-								$("#p1_battlefield").append(card.element);
+								$("#p1-battlefield-nonland").append(card.element);
 						}
 						else
 						{
 							if(battlefield[permanent]['t'] == 'L')
-								$("#p2_battlefield_land").append(card.element);
+								$("#p2-battlefield-land").append(card.element);
 							else
-								$("#p2_battlefield").append(card.element);
+								$("#p2-battlefield-nonland").append(card.element);
 						}
 					})();
 				}
@@ -171,22 +171,47 @@ function UI(mtg, player)
 			}
 		};
 
-		$("#stack").empty();
+		// Displays elements in the stack
+		$("#stack-buttons").empty();
+		$("#spells-and-abilities").empty();
 		for (var packet of data.player_actions)
 		{
 			for (i of packet)
 			{
+
 				switch (i)
 				{
 				case "select card":
 					break;
 				case "pass priority":
-				case "pay cost":
-				case "cancel":
+				case "confirm payment":
 				case "act":
 					(function(){
+						console.log(i);
 						var action = new Action(i.toUpperCase(), i);
-						$("#stack").append(action.element);
+						$("#stack-buttons").append(action.element);
+						$("#spells-and-abilities").append("Test text");
+					})();
+					break;
+				case "pay cost":
+					(function(){
+						console.log(i);
+						var action = new Action(i.toUpperCase(), i);
+						$("#selection-actions").empty();
+						$("#stack").empty();
+						$("#stack").append("Pay with: ")
+						$("#stack").append(new Action("Confirm", "confirm payment").element);
+						$("#stack").append(new Action("Cancel", "cancel").element);
+					})();
+					break;
+				case "cancel":
+					(function(){
+						console.log(i);
+						var action = new Action(i.toUpperCase(), i);
+						$(".selected").removeClass("selected");
+						$("#selection-actions").empty();
+						$("#stack").empty();
+						//$("#stack").append(new Action("pass priority", "pass priority").element);
 					})();
 					break;
 				default:
@@ -205,8 +230,10 @@ function UI(mtg, player)
 				case "be revealed":
 				case "be discarded":
 				case "be exiled":
+				case "be cycled":
 					break;
 				default:
+				console.log("error two: " + i);
 					break;
 				}
 			}

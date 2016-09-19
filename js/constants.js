@@ -44,6 +44,8 @@ var
 	POWER_ATTRIBUTE          = "P",
 	TOUGHNESS_ATTRIBUTE      = "T",
 	COLOR_IDENTITY_ATTRIBUTE = "i",
+	SOURCE_ATTRIBUTE		 = "u",
+	CMC_ATTRIBUTE			 = "M",
 
 	// supertypes
 	SUPERTYPES = {
