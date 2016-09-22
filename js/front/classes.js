@@ -1,8 +1,5 @@
 function UI(mtg, player)
 {
-	var NUM_PLAYERS = 2;
-
-	var actions;
 	var pay_cost;
 
 	var ui = this;
@@ -90,19 +87,39 @@ function UI(mtg, player)
 	// Updates the display on each server tick
 	ui.display = function(data)
 	{
-		var i, j;
+		var i, j, id;
 
-		actions = data.actions;
 		player = data.player; // temporary while doing both uis on one display
+
+		$("#stack").empty();
+		for (i of data.self.actions)
+		{
+			switch (i)
+			{
+			case "select card":
+				break;
+			case "pass priority":
+			case "pay cost":
+			case "cancel":
+			case "act":
+				(function(){
+					var action = new Action(i.toUpperCase(), i);
+					$("#stack").append(action.element);
+				})();
+				break;
+			default:
+				break;
+			}
+		}
 
 		// Displays cards in hard
 		$('#hand').empty();
-		for (var card_id in data.hand)
+		for (id in data.self.hand)
 		{
-			if (data.hand.hasOwnProperty(card_id))
+			if (data.self.hand.hasOwnProperty(id))
 			{
 				(function(){
-					var card = new Card(card_id, data.hand[card_id]);
+					var card = new Card(id, data.self.hand[id]);
 					$("#hand").append(card.element);
 				})();
 			}
@@ -110,116 +127,60 @@ function UI(mtg, player)
 
 		// Displays priority border
 		$(".priority").removeClass("priority");
-		if (data.priority == data.player)
+		if (data.priority == player)
 			$("#player1").addClass("priority");
 		else if (data.priority != NO_PLAYER)
 			$("#player2").addClass("priority");
 
 		// Displays active player highlighting
 		$(".active").removeClass("active");
-		if (data.active == data.player)
+		if (data.active == player)
 			$("#player1").addClass("active");
 		else if (data.active != NO_PLAYER)
 			$("#player2").addClass("active");
 
 		// Displays cards on battlefield
 		$('.battlefield').empty();
-		var board = [data.p1_battlefield, data.p2_battlefield];
-		for(var battlefield of board)
+		var board = [data.self.battlefield, data.opponent.battlefield];
+		for (var battlefield of board)
 		{
-			for (var permanent in battlefield)
+			for (id of Object.getOwnPropertyNames(battlefield))
 			{
-				if (battlefield.hasOwnProperty(permanent))
-				{
-					(function(){
-						var card = new Card(permanent, permanent);
-						if(battlefield == board[0])
-						{
-							if(battlefield[permanent]['t'] == 'L')
-								$("#p1_battlefield_land").append(card.element);
-							else
-								$("#p1_battlefield").append(card.element);
-						}
+				(function(){
+					var card = new Card(id, battlefield[id]);
+					if(battlefield == board[0])
+					{
+						if(battlefield[id]['t'] == 'L')
+							$("#p1_battlefield_land").append(card.element);
 						else
-						{
-							if(battlefield[permanent]['t'] == 'L')
-								$("#p2_battlefield_land").append(card.element);
-							else
-								$("#p2_battlefield").append(card.element);
-						}
-					})();
-				}
+							$("#p1_battlefield").append(card.element);
+					}
+					else
+					{
+						if(battlefield[id]['t'] == 'L')
+							$("#p2_battlefield_land").append(card.element);
+						else
+							$("#p2_battlefield").append(card.element);
+					}
+				})();
 			}
 		}
 
 		// Displays mana pools
 		$(".mana").empty();
-		for(i in data.mana)
+		var mana_pools = [data.self.mana, data.opponent.mana];
+		for (var pool of mana_pools)
 		{
-			for (j of Object.getOwnPropertyNames(data.mana[i]))
+			for (var color of Object.getOwnPropertyNames(pool))
 			{
-				if (COLORS.indexOf(j) !== -1)
+				if (COLORS.indexOf(color) !== -1)
 				{
-					mana_img = imgify('{' + j + '}');
+					mana_img = imgify('{' + color + '}');
 
-					if(i == 0){
-						$("#p1_mana").append(mana_img + ": " + data.mana[i][j]);
-					}
+					if(pool == mana_pools[0])
+						$("#p1_mana").append(mana_img + ": " + pool[color]);
 					else
-						$("#p2_mana").append(mana_img + ": " + data.mana[i][j]);
-				}
-			}
-		};
-
-		$("#stack").empty();
-		for (var packet of data.player_actions)
-		{
-			for (i of packet)
-			{
-				switch (i)
-				{
-				case "select card":
-					break;
-				case "pass priority":
-				case "pay cost":
-				case "cancel":
-				case "act":
-					(function(){
-						var action = new Action(i.toUpperCase(), i);
-						$("#stack").append(action.element);
-					})();
-					break;
-				default:
-					console.log("error one: " + i);
-					break;
-				}
-			}
-		}
-		for (packet of data.hand_card_actions)
-		{
-			for (i of packet)
-			{
-				switch (i)
-				{
-				case "be played":
-				case "be revealed":
-				case "be discarded":
-				case "be exiled":
-					break;
-				default:
-					break;
-				}
-			}
-		}
-		for (packet of data.board_item_actions)
-		{
-			for (i of packet)
-			{
-				switch (i)
-				{
-				default:
-					console.log("error three: " + i);
-					break;
+						$("#p2_mana").append(mana_img + ": " + pool[color]);
 				}
 			}
 		}
