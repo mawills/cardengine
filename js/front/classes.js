@@ -57,7 +57,13 @@ function UI(mtg, player)
 			$("#selection-text").empty().html(text);
 
 			$('#selection-actions').empty();
-			$("#selection-actions").append(new Action("Play " + name, "select card", id).element);
+
+			if (t.element.parent().attr('id') == 'hand')
+				$("#selection-actions").append(new Action("Play " + name, "pay cost", id).element);
+			else if (t.element.parent().hasClass("battlefield-land"))
+				$("#selection-actions").append(new Action("Tap " + name, "tap", id).element);
+			else
+				$("#selection-actions").append("No legal actions.");
 		}
 
 		t.element = $("<img>", { class: 'card', src: 'res/img/cards/' + img }).click(select);
@@ -149,20 +155,29 @@ function UI(mtg, player)
 			{
 				(function(){
 					var card = new Card(id, battlefield[id]);
-					console.log(battlefield[id]);
 					if(battlefield == board[0])
 					{
-						if(CARDS[battlefield[id]]['t'] == 'L')
-							$("#player1 .battlefield-land").append(card.element);
-						else
-							$("#player1 .battlefield-nonland").append(card.element);
+						switch(battlefield[id])
+						{
+							case "Forest":
+							case "Island":
+								$("#player1 > .battlefield-land").append(card.element);
+								break;
+							default:
+								$("#player1 > .battlefield-nonland").append(card.element);
+						}
 					}
 					else
 					{
-						if(CARDS[battlefield[id]]['t'] == 'L')
-							$("#player2 .battlefield-land").append(card.element);
-						else
-							$("#player2 .battlefield-nonland").append(card.element);
+						switch(battlefield[id])
+						{
+							case "Forest":
+							case "Island":
+								$("#player2 > .battlefield-land").append(card.element);
+								break;
+							default:
+								$("#player2 > .battlefield-nonland").append(card.element);
+						}
 					}
 				})();
 			}
