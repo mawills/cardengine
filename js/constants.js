@@ -50,7 +50,7 @@ var
 		B:"Basic",
 		L:"Legendary",
 		S:"Snow",
-		W:"World"
+		W:"World",
 	},
 
 	// types
@@ -62,7 +62,7 @@ var
 		L:"Land",
 		P:"Planeswalker",
 		S:"Sorcery",
-		T:"Tribal"
+		T:"Tribal",
 	},
 
 	// layouts

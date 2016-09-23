@@ -140,7 +140,8 @@ function UI(mtg, player)
 			$("#player2").addClass("active");
 
 		// Displays cards on battlefield
-		$('.battlefield').empty();
+		$('.battlefield-land').empty();
+		$('.battlefield-nonland').empty();
 		var board = [data.self.battlefield, data.opponent.battlefield];
 		for (var battlefield of board)
 		{
@@ -151,16 +152,16 @@ function UI(mtg, player)
 					if(battlefield == board[0])
 					{
 						if(battlefield[id]['t'] == 'L')
-							$("#p1_battlefield_land").append(card.element);
+							$("#player1 .battlefield-land").append(card.element);
 						else
-							$("#p1_battlefield").append(card.element);
+							$("#player1 .battlefield-nonland").append(card.element);
 					}
 					else
 					{
 						if(battlefield[id]['t'] == 'L')
-							$("#p2_battlefield_land").append(card.element);
+							$("#player2 .battlefield-land").append(card.element);
 						else
-							$("#p2_battlefield").append(card.element);
+							$("#player2 .battlefield-nonland").append(card.element);
 					}
 				})();
 			}

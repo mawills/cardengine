@@ -1,0 +1,111 @@
+@font-face {
+	font-family: "Beleren";
+	src: url("../res/fonts/beleren-bold-webfont.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Beleren Smallcaps";
+	src: url("../res/fonts/belerensmallcaps-bold-webfont.ttf") format("truetype");
+}
+
+body {
+	overflow-x: hidden;
+	overflow-y: hidden;
+	font-family: "Beleren";
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	user-drag: none;
+	-webkit-touch-callout: none;
+	box-sizing: border-box;
+}
+
+div {
+	box-sizing: border-box;
+}
+
+img {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	user-drag: none;
+	-webkit-touch-callout: none;
+}
+
+.card {
+	cursor: pointer;
+}
+
+#selection {
+	background-color: #888;
+}
+
+.player {
+	background-color: #005;
+}
+
+#phases {
+	background-color: #044;
+}
+
+.action {
+	padding: 5px;
+	color: black;
+	cursor: pointer;
+	border: 1px solid black;
+	background-color: #EEE;
+}
+
+#hand {
+	background-color: #050;
+	overflow-y: hidden;
+}
+
+.library {
+	background-image: url("../res/img/cardback.svg");
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+
+.graveyard {
+	background-color: #222;
+}
+
+.stats {
+	background-color: #008;
+	color: white;
+}
+
+#player1.priority > .stats {
+	border-top: 2px solid white;
+	border-right: 2px solid white;
+}
+
+#player2.priority > .stats {
+	border-bottom: 2px solid white;
+	border-right: 2px solid white;
+}
+
+#stack {
+	padding: 15px;
+	background-color: #500;
+	color: #FFF;
+}
+
+.player.priority {
+	outline-offset: -2px;
+	outline: 2px solid white;
+}
+
+.player.active {
+	background-color: #337;
+}
+
+.selected {
+	outline-offset: -3px;
+	outline: 3px solid red;
+}

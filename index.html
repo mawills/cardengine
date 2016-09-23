@@ -6,25 +6,31 @@
 		<script type="text/javascript" src="js/cards.js"></script>
 		<script type="text/javascript" src="js/constants.js"></script>
 		<script type="text/javascript" src="js/back/decks.js"></script>
-		<script type="text/javascript" src="js/back/classes.js"></script>
-		<script type="text/javascript" src="js/back/engine.js"></script>
+		<script type="text/javascript" src="js/back/classes/board_item.js"></script>
+		<script type="text/javascript" src="js/back/classes/card.js"></script>
+		<script type="text/javascript" src="js/back/classes/cost.js"></script>
+		<script type="text/javascript" src="js/back/classes/game.js"></script>
+		<script type="text/javascript" src="js/back/classes/mana.js"></script>
+		<script type="text/javascript" src="js/back/classes/player.js"></script>
+		<script type="text/javascript" src="js/back/classes/stack_item.js"></script>
+v		<script type="text/javascript" src="js/back/engine.js"></script>
 		<script type="text/javascript" src="js/back/interface.js"></script>
 		<script type="text/javascript" src="js/back/main.js"></script>
 		<script type="text/javascript" src="js/front/util.js"></script>
 		<script type="text/javascript" src="js/front/classes.js"></script>
 		<script type="text/javascript" src="js/front/main.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
-		<link rel="stylesheet" type="text/css" href="css/board.css">
+		<link rel="stylesheet" type="text/css" href="css/grid.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/log.css">
 	</head>
 	<body>
-
 		<div id="selection">
 			<div id="selection-name"></div>
 			<div id="selection-type"></div>
 			<div id="selection-text"></div>
 			<div id="selection-actions"></div>
 		</div>
-
 		<div id="log">
 			<ul id="tabs" class="tabs">
 				<li data-target="#combatlog" class="js-current">Combat Log</li>
@@ -39,30 +45,24 @@
 				</div>
 			</div>
 		</div>
-		<div id="board">
-			<div id="player2" class="player">
-				<div class="library_space">
-					<div id="p2_deck" class="deck"></div>
-					<div id="p2_graveyard" class="graveyard"></div>
-				</div>
-				<div id="p2_battlefield_land" class="battlefield"></div>
-				<div id="p2_battlefield" class="battlefield"></div>
-				<div id="p2_stats" class="stats">
-					<div id="p2_mana" class="mana"></div>
-				</div>
+		<div id="player2" class="player">
+			<div class="library"></div>
+			<div class="graveyard"></div>
+			<div class="battlefield-land"></div>
+			<div class="battlefield-nonland"></div>
+			<div class="stats">
+				<div class="mana"></div>
 			</div>
-			<div id="phases"></div>
-			<div id="player1" class="player">
-				<div class="library_space">
-					<div id="p1_graveyard" class="graveyard"></div>
-					<div id="p1_deck" class="deck"></div>
-				</div>
-				<div id="p1_battlefield" class="battlefield"></div>
-				<div id="p1_battlefield_land" class="battlefield"></div>
-				<div id="p1_stats" class="stats">
-					<div id="p1_mana" class="mana"></div>
-				</div>
+		</div>
+		<div id="phases"></div>
+		<div id="player1" class="player">
+			<div class="stats">
+				<div class="mana"></div>
 			</div>
+			<div class="graveyard"></div>
+			<div class="library"></div>
+			<div class="battlefield-nonland"></div>
+			<div class="battlefield-land"></div>
 		</div>
 		<div id="hand"></div>
 		<div id="stack"></div>

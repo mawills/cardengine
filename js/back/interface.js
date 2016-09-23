@@ -24,7 +24,7 @@ function Interface(p)
 			if (game.attemptAction.resolve)
 				game.attemptAction.resolve({action: action, arg: arg});
 			else
-				error("An illegal action was attempted by player " + p.id + "." + action);
+				error("An illegal action was attempted by player " + p.self + ": " + action);
 			return;
 		}
 
@@ -41,11 +41,11 @@ function Interface(p)
 	game.requestUIUpdate = function()
 	{
 		p = mtg.players[mtg.priority]; // temporary while doing both uis on one display
-		gameData.player = p.id;
+		gameData.player = p.self;
 		gameData.priority = mtg.priority;
 		gameData.active = mtg.active;
-		gameData.self = p.id ? p2Data : p1Data;
-		gameData.opponent = p.id ? p1Data : p2Data;
+		gameData.self = p.self ? p2Data : p1Data;
+		gameData.opponent = p.self ? p1Data : p2Data;
 		ui.display(gameData);
 	};
 }
