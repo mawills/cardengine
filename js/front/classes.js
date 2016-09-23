@@ -149,16 +149,17 @@ function UI(mtg, player)
 			{
 				(function(){
 					var card = new Card(id, battlefield[id]);
+					console.log(battlefield[id]);
 					if(battlefield == board[0])
 					{
-						if(battlefield[id]['t'] == 'L')
+						if(CARDS[battlefield[id]]['t'] == 'L')
 							$("#player1 .battlefield-land").append(card.element);
 						else
 							$("#player1 .battlefield-nonland").append(card.element);
 					}
 					else
 					{
-						if(battlefield[id]['t'] == 'L')
+						if(CARDS[battlefield[id]]['t'] == 'L')
 							$("#player2 .battlefield-land").append(card.element);
 						else
 							$("#player2 .battlefield-nonland").append(card.element);

@@ -13,7 +13,7 @@ function Interface(p)
 			actions: ['pass priority'],
 			life: 20,
 			mana: {W:1, C:1},
-			battlefield: {2:'Forest'},
+			battlefield: {2:'Forest',5:'Sakura-Tribe Elder'},
 			hand: {3:'Island', 4:'Forest'},
 		};
 
