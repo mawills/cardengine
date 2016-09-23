@@ -136,18 +136,16 @@
 	height: 15vh;
 }
 
-.player .stats img {
-	padding-top: 2vh;
-	padding-left: 2vh;
-	height: 6vh;
-	width: 6vh;
+.player .stats * {
+	display: inline-block;
+	vertical-align: middle;
+	padding-right: 5px;
 }
 
-#player1 .battlefield {
-	left:   10vw;
-	width:  55vw;
-	top:     6vh;
-	height: 30vh;
+.player .stats img {
+	padding: 1vh;
+	height: 4vh;
+	width: 4vh;
 }
 
 .battlefield-land > img,
@@ -159,11 +157,4 @@
 	float: left;
 	width: auto;
 	height: 21vh;
-}
-
-#player1 .library {
-
-}
-#player1 .graveyard {
-
 }
