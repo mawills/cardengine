@@ -180,9 +180,9 @@ function UI(mtg, player)
 					mana_img = imgify('{' + color + '}');
 
 					if(pool == mana_pools[0])
-						$("#p1_mana").append(mana_img + ": " + pool[color]);
+						$("#player1 .mana").append(mana_img + ": " + pool[color]);
 					else
-						$("#p2_mana").append(mana_img + ": " + pool[color]);
+						$("#player2 .mana").append(mana_img + ": " + pool[color]);
 				}
 			}
 		}
