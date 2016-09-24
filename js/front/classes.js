@@ -49,8 +49,11 @@ function UI(mtg, player)
 
 		function select()
 		{
-			$(".selected").removeClass("selected");
-			t.element.addClass("selected");
+			$("#selected").removeAttr('id');
+			$(".selected").removeClass('selected');
+			t.element.addClass('selected');
+			t.element.attr("id","selected");
+
 
 			$("#selection-name").html(name + "<br>");
 			$("#selection-type").html(type_text + "<br>");
@@ -77,12 +80,6 @@ function UI(mtg, player)
 			mtg.players[player].interface.attemptAction(action, arg);
 		}
 		a.element = $("<div>", { class: 'action' }).click(act).text(label);
-	};
-
-	function addManaToManaPool(color)
-	{
-		if(pay_cost)
-			mtg.players[player].interface.attemptAction("pay cost", color);
 	};
 
 	ui.connect = function()
@@ -161,6 +158,7 @@ function UI(mtg, player)
 						{
 							case "Forest":
 							case "Island":
+							case "Mountain":
 								$("#player1 > .battlefield-land").append(card.element);
 								break;
 							default:
@@ -173,6 +171,7 @@ function UI(mtg, player)
 						{
 							case "Forest":
 							case "Island":
+							case "Mountain":
 								$("#player2 > .battlefield-land").append(card.element);
 								break;
 							default:
@@ -190,15 +189,15 @@ function UI(mtg, player)
 		{
 			for (var color of Object.getOwnPropertyNames(pool))
 			{
-				if (COLORS.indexOf(color) !== -1)
-				{
-					mana_img = imgify('{' + color + '}');
+				if(pool[color] > 0)
+					{
+						mana_img = imgify('{' + color + '}');
 
-					if(pool == mana_pools[0])
-						$("#player1 .mana").append(mana_img + ": " + pool[color]);
-					else
-						$("#player2 .mana").append(mana_img + ": " + pool[color]);
-				}
+						if(pool == mana_pools[0])
+							$("#player1 .mana").append(mana_img + ": " + pool[color]);
+						else
+							$("#player2 .mana").append(mana_img + ": " + pool[color]);
+					}
 			}
 		}
 	};

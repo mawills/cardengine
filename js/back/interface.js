@@ -5,15 +5,15 @@ function Interface(p)
 	var p1Data = {
 			actions: ['pass priority'],
 			life: 20,
-			mana: {G:3, R:2},
-			battlefield: {5:'Island', 7:"Monastery Swiftspear"},
-			hand: {0:'Island', 1:'Forest'},
+			mana: {W:0,U:0,B:0,G:0,R:0,C:0},
+			battlefield: {1:'Forest', 7:"Wild Nacatl"},
+			hand: {0:'Island', 5:'Island'},
 		};
 	var p2Data = {
 			actions: ['pass priority'],
 			life: 20,
-			mana: {W:1, C:1},
-			battlefield: {4:'Forest', 6:"Sakura-Tribe Elder"},
+			mana: {W:0,U:0,B:0,G:0,R:0,C:0},
+			battlefield: {4:'Forest', 6:"Sakura-Tribe Elder", 7:"Mountain"},
 			hand: {2:"Wild Nacatl", 3:"Forest"},
 		};
 
@@ -21,7 +21,8 @@ function Interface(p)
 	{
 		console.log("action: " + action);
 		console.log("arg: " + arg);
-		switch(action){
+		switch(action)
+		{
 			case "pass priority":
 			{
 				if (game.attemptAction.resolve)
@@ -30,6 +31,7 @@ function Interface(p)
 					error("An illegal action was attempted by player " + p.id + ". " + action);
 				break;
 			}
+			break;
 			case "pay cost":
 			{
 				switch(arg)
@@ -55,6 +57,26 @@ function Interface(p)
 				}
 				break;
 			}
+			case "tap":
+				$("#selected").addClass("tapped");
+				switch(arg)
+				{
+					case "0":
+					case "5":
+						p1Data.mana.U++;
+						break;
+					case "1":
+						p1Data.mana.G++;
+						break;
+					case "3":
+					case "4":
+						p2Data.mana.G++;
+						break;
+					case "7":
+						p2Data.mana.R++;
+						break;
+				}
+				break;
 			default:
 				error("An illegal action was attempted by player " + p.id + ". " + action);
 				break;
